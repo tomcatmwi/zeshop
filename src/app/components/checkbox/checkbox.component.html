@@ -1,0 +1,12 @@
+<div>
+    <div class="fa checkbox"
+       (click)="click();"
+       [class.fa-2x]="size==2"
+       [class.fa-3x]="size==3"
+       [class.fa-check-square-o]="value"
+       [class.fa-square-o]="!value" >
+    </div>
+    <div *ngIf="label" class="checkbox-label" (click)="click();">{{ label }}</div>
+        
+    
+</div>

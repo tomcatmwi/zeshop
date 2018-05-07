@@ -1,0 +1,79 @@
+<div class="container">
+
+    <form class="form-horizontal" stopValidation [formGroup]="form">
+
+        <h1>Login</h1>
+
+        <div class="card">
+            <div class="card-body">
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-12">
+                            <label for="username" class="control-label">Username:</label>
+                        </div>
+                        <div class="col-lg-10 col-sm-12">
+                            <input type="text" formControlName="username" class="form-control">
+                            <div *ngIf="form.controls.username.touched && form.controls.username.errors" class="alert alert-danger">{{ form.controls.username.errors.errorMsg }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-12">
+                            <label for="password" class="control-label">Password:</label>
+                        </div>
+                        <div class="col-lg-10 col-sm-12">
+                            <input type="password" formControlName="password" class="form-control">
+                            <div *ngIf="form.controls.password.touched && form.controls.password.errors" class="alert alert-danger">{{ form.controls.password.errors.errorMsg }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-12"></div>
+                        <div class="col-lg-10 col-sm-12">
+                            <re-captcha 
+                                (resolved)="captcha = $event;"
+                                [siteKey]="recaptcha_data?.site_key">
+                            </re-captcha>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-12"></div>
+                        <div class="col-lg-10 col-sm-12">
+                            <div class="alert" *ngIf="serverResponse && serverResponse?.message != ''" (click)="serverResponse = null" [class.alert-danger]="serverResponse && serverResponse.result == 'error'">{{ serverResponse.message }}</div>
+                            <button [disabled]="!captcha || 
+                                                loading ||
+                                                !form.dirty || 
+                                                !form.valid" 
+                                    class="btn btn-primary"
+                                    type="button"
+                                    (click)="submitForm()">Login</button>
+                            <spinner *ngIf="loading"></spinner>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-12">
+                        </div>
+                        <div class="col-lg-10 col-sm-12">
+                            <i class="fa fa-caret-right"></i>
+                            <a routerLink="/forgotpsw">I forgot my password</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+
+</div>

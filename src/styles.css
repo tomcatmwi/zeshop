@@ -1,0 +1,210 @@
+@import "../node_modules/bootstrap/dist/css/bootstrap.css";
+@import "assets/css/sticky-footer-navbar.css";
+@import "assets/css/font-awesome.min.css";
+
+body {
+    overflow-x: hidden;
+}
+
+nav {
+    user-select: none;
+}
+
+a, a:visited {
+    cursor: pointer;
+    color: #000000;
+}
+
+a:hover {
+    decoration: underline;
+    color: #0000ff;
+}
+
+h1, h2, h3, h4, h5 {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.center {
+    text-align: center;
+}
+
+.glyphicon {
+    cursor: pointer;
+    opacity: .6;
+}
+
+.glyphicon:hover {
+    opacity: 1;
+}
+
+.iconbtn {
+    width: auto;
+    height: auto;
+    max-width: 4em;
+    max-height: 4em;
+    min-width: 3em;
+    min-height: 3em;
+}
+
+.alert-small {
+    padding: 0.5em;
+    vertical-align: middle;
+}
+
+.noselect {
+    user-select: none;
+}
+
+.paginator-holder {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+/* Table settings ------------------------------------------------------------------- */
+
+.table {
+    margin-top: 1em;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+thead {
+    border: none !important;
+}
+
+th {
+    padding-bottom: 1em;
+    background-color: #F5F5F5;
+    border: none !important;
+}
+
+.tableglyph {
+    text-align: center;
+    cursor: pointer;
+    width: 1.5em;
+    min-width: 1.5em;
+    max-width: 1.5em !important;
+}
+
+td:not(.tableglyph) {
+    overflow: hidden;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    width: auto;
+    min-width: 1em;
+    max-width: calc(100% - 2em);
+}
+
+.thead-caption {
+    background-color: #F5F5F5;
+}
+
+table > tr:first-child > td {
+    border-top: 0 !important;
+    background: #FF0000;
+}
+
+.table-control {
+    margin-bottom: 1em;
+}
+
+/*  Form settings ------------------------------------------------------------------- */
+
+textarea {
+    resize: none;
+}
+
+label {
+    user-select: none;
+    cursor: pointer;
+}
+
+::placeholder {
+    color: #D1D1D1 !important;
+    opacity: 1;
+}
+
+.inline-form > div {
+    margin-bottom: 0.5em;
+}
+
+.card {
+    margin-bottom: 1em;
+}
+
+form > .card {
+    background-color: #F5F5F5;
+    border: none;
+}
+
+.form-group > div > .alert {
+    margin-top: 1em;
+}
+
+.form-group > label {
+    margin-top: 0.3em;
+}
+
+.card-body > .no-bottom-margin {
+    margin-bottom: 0px;
+}
+
+.card-body > .form-group:last-child {
+    margin-bottom: 0px;
+}
+
+.datalist li {
+    font-size: 0.85em;
+    padding-left: 0;
+    margin-left: 0;
+    line-height: 2em;
+}
+
+input[type=checkbox] {
+    width: 2em;
+    height: 2em;
+    display: inline-block;
+    vertical-align: center;
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px;
+    color: #000000;
+}
+
+/*  Tabbed cards ------------------------------------------------------------------- */
+
+.card-tabbed {
+    border: none;
+    background-color: #F5F5F5;
+    border-top-left-radius: 0;
+}
+
+.container .nav-tabs,
+.container .nav-link,
+.container .nav-item {
+    border: none;
+    margin-bottom: 0px;
+}
+
+.container .nav-tabs > .nav-item > .active {
+    background-color: #F5F5F5;
+}
+
+/*  Mobile stuff ------------------------------------------------------------------- */
+
+@media only screen and (max-width: 600px) {
+    .tablecol-600 {
+        display: none;
+    }
+}

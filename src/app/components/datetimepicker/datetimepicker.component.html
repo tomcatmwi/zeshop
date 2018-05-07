@@ -1,0 +1,37 @@
+<div class="flex-container">
+    
+            <button class="btn btn-primary datebtn" (click)="stepdate(-1);" *ngIf="buttons"><i class="fa fa-arrow-left"></i></button>
+
+            <select id="year" (change)="dateChange();" class="form-control dateSelect" [(ngModel)]="selectYear" #year (change)="updateDays(year.value, month.value);">
+                <option *ngFor="let year of years" value="{{ year }}">{{ year }}</option>
+            </select>
+
+            <select id="month" (change)="dateChange();" class="form-control dateSelect" [(ngModel)]="selectMonth" #month (change)="updateDays(year.value, month.value);">
+                <option *ngFor="let month of months, let i = index" value="{{ i+1 }}">{{ month }}</option>
+            </select>
+
+            <select id="day" (change)="dateChange();" class="form-control dateSelect" [(ngModel)]="selectDay" (change)="onChange(this.calcDate());">
+                <option *ngFor="let day of days" value="{{ day }}">{{ day }}</option>
+            </select>
+            
+            <div id="timeSelectHolder" *ngIf="showTime">
+
+                <select id="hour" (change)="dateChange();" class="form-control timeSelect" [(ngModel)]="selectHour" (change)="onChange(this.calcDate());">
+                    <option *ngFor="let hour of hours" value="{{ hour }}">{{ tabZero(hour) }}</option>
+                </select>
+                <div class="timeColon">:</div>
+
+                <select id="minute" (change)="dateChange();" class="form-control timeSelect" [(ngModel)]="selectMinute" (change)="onChange(this.calcDate());">
+                    <option *ngFor="let minute of minutes" value="{{ minute }}">{{ tabZero(minute) }}</option>
+                </select>
+                <div *ngIf="showSeconds" class="timeColon">:</div>
+
+                <select id="second" *ngIf="showSeconds" (change)="dateChange();" class="form-control timeSelect" [(ngModel)]="selectSecond" (change)="onChange(this.calcDate());">
+                    <option *ngFor="let second of seconds" value="{{ second }}">{{ tabZero(second) }}</option>
+                </select>
+            
+            </div>
+
+            <button class="btn btn-primary datebtn" (click)="stepdate(1);" *ngIf="buttons"><i class="fa fa-arrow-right"></i></button>
+            
+</div>

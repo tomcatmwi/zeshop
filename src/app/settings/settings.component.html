@@ -1,0 +1,47 @@
+<confirmbox *ngIf="confirmBoxData?.show" [data]="confirmBoxData" (response)="confirmBoxHandler($event)"></confirmbox>
+<div class="container">
+    <h1>Settings</h1>
+    <div class="card table-control">
+        <div class="card-body">
+            <button routerLink="/settings-edit" class="btn btn-primary">Add new setting</button>
+            <button  routerLink="/settinggroups" class="btn btn-default">Groups</button>
+            <spinner *ngIf="loading"></spinner>
+        </div>
+    </div>
+
+    <div class="alert alert-danger" (click)="this.data.result = 'pending'" *ngIf="!loading && data.result == 'error'">{{ data.message }}</div>
+    <!-- ------------------------------------------------------------------------------------------------------>
+
+    <div>
+
+        <table class="table">
+           <ng-template ngFor let-data [ngForOf]="data?.data" let-groupIndex="index">
+
+                <thead>
+                    <tr>
+                        <th class="thead-caption" colspan="5">{{ data.name }}</th>
+                    </tr>
+                    <tr>
+                        <th>Token</th>
+                        <th>Value</th>
+                        <th class="tablecol-700">Explanation</th>
+                        <th class="tableglyph"></th>
+                        <th class="tableglyph"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let setting of data.settings, let rowIndex = index">
+                        <td>{{ setting?.token }}</td>
+                        <td>{{ setting?.value }}</td>
+                        <td class="tablecol-700">{{ setting?.description }}</td>
+                        <td class="tableglyph"><a [routerLink]="'/settings-edit/'+setting?._id" class="fa fa-edit"></a></td>
+                        <td class="tableglyph"><a (click)="delete({ id: setting?._id, groupIndex: groupIndex, rowIndex: rowIndex });" class="fa fa-remove"></a></td>
+                    </tr>
+                </tbody>
+            </ng-template>
+
+        </table>
+
+    </div>
+
+</div>

@@ -1,0 +1,131 @@
+<confirmbox [data]="confirmBoxData" (response)="confirmBoxHandler($event)"></confirmbox>
+
+<div class="container">
+    <h1>Users</h1>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item" style="border: 0px;">
+            <a class="nav-link" [class.active]="menutab==1" (click)="menutab=1">Operations</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="menutab==2" (click)="menutab=2">Sort & filter</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="menutab==3" (click)="menutab=3">Search</a>
+        </li>
+    </ul>
+
+    <div class="card card-tabbed" *ngIf="menutab==1">
+        <div class="card-body">
+            <form class="form-inline">
+                <div class="form-group">
+                    <button [disabled]="loading" routerLink="/users-edit" class="btn btn-primary">New user</button>
+                    <spinner *ngIf="loading"></spinner>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card card-tabbed" *ngIf="menutab==2">
+        <div class="card-body">
+            <form>
+                <div class="row inline-form">
+                    <div class="col-lg-3">
+                        <select [(ngModel)]="viewSettings.sortField" name="sortField" class="form-control">
+                            <option value="1">By name</option>
+                            <option value="2">By registration date</option>
+                            <option value="3">By e-mail address</option>
+                            <option value="4">By user status</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <select [(ngModel)]="viewSettings.sortMode" name="sortMode" class="form-control">
+                            <option value="1">Increasing</option>
+                            <option value="-1">Decreasing</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <button [disabled]="loading" (click)="loadData();" class="btn btn-primary">Sort</button>
+                        <spinner *ngIf="loading"></spinner>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card card-tabbed" *ngIf="menutab==3">
+        <div class="card-body">
+            <form>
+                <div class="row inline-form">
+                    <div class="col-lg-3">
+                        <select [(ngModel)]="viewSettings.searchField" name="searchField" class="form-control">
+                            <option value="0">Any field</option>
+                            <option value="1">Name</option>
+                            <option value="2">E-mail address</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <select [(ngModel)]="viewSettings.searchMode" name="searchMode" class="form-control">
+                            <option value="1">Contains</option>
+                            <option value="2">Starts with</option>
+                            <option value="3">Exactly matches</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="text" [(ngModel)]="viewSettings.searchText" name="searchText" placeholder="Enter search term..." class="form-control"
+                        />
+                    </div>
+                    <div class="col-lg-3">
+                        <button [disabled]="loading" (click)="loadData()" class="btn btn-primary">Search</button>
+                        <spinner *ngIf="loading"></spinner>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="alert alert-danger" (click)="this.data.result = 'pending'" *ngIf="!loading && data?.result == 'error'">{{ data?.message }}</div>
+
+    <div class="paginator-holder">
+        <paginator  *ngIf="this.data?.data" [totalRecords]="data?.data.length" [(ngModel)]="pageData"></paginator>
+    </div>
+
+    <!-- ------------------------------------------------------------------------------------------------------>
+
+    <table class="table" *ngIf="this.data?.data">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th class="tablecol-600">E-mail</th>
+                <th class="tablecol-600">Registered</th>
+                <th class="tablecol-600">Level</th>
+                <th class="tableglyph"></th>
+                <th class="tableglyph"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of data?.data.slice(pageData?.startRecord, pageData?.startRecord + pageData?.recordPerPage); let rowIndex=index">
+                <td>{{ data?.name }}</td>
+                <td class="tablecol-600">
+                    <a [href]="'mailto:'+data?.email" target="_blank">{{ data?.email }}</a>
+                </td>
+                <td class="tablecol-600">{{ data?.registered | date }}</td>
+                <td class="tablecol-600">{{ data?.levelName }}</td>
+                <td class="tableglyph" [routerLink]="'/users-edit/'+data?._id">
+                    <i class="fa fa-edit"></i>
+                </td>
+                <td class="tableglyph" (click)="delete(data);">
+                    <i class="fa fa-remove"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ------------------------------------------------------------------------------------------------------>
+
+    <div class="paginator-holder">
+        <paginator *ngIf="this.data?.data" [totalRecords]="data?.data.length" [(ngModel)]="pageData"></paginator>
+    </div>
+
+</div>

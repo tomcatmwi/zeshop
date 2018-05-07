@@ -1,0 +1,84 @@
+.flex-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: flex-start;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
+select {
+    margin-right: 0.1em;
+    margin-left: 0.1em;
+    max-width: auto;
+    width: auto;
+    box-sizing: border-box;
+}
+
+.timeColon {
+    vertical-align: middle;
+    font-size: 1.5em;
+    font-weight: bold;
+    display: inline-block;
+}
+
+#timeSelectHolder {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    box-sizing: border-box;
+}
+
+.flex-container .dateSelect:first-of-type {
+    margin-left: 0;
+}
+
+.datebtn:first-of-type {
+    margin-right: 0.5em;
+}
+
+@media screen and (max-width: 800px) {
+    .dateSelect {
+        font-size: 0.85em;
+        width: 100%;
+        min-width: 100%;
+        overflow: hidden;
+        margin: 0.3em 0 0.3em 0;
+    }
+
+    .timeSelect {
+        font-size: 0.85em;
+        min-width: 30%;
+        max-width: 30%;
+        width: 30%;
+        overflow: hidden;
+        margin: 0.3em 0 0.3em 0;
+        vertical-align: baseline;
+    }
+
+    #timeSelectHolder {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-content: flex-start;
+        align-items: flex-start;
+        box-sizing: border-box;
+    }
+
+    .timeColon {
+        max-width: 5%;
+        width: 5%;
+        text-align: center;
+    }
+
+    .datebtn {
+        display: none;
+    }
+}

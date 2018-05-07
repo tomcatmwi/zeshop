@@ -1,0 +1,14 @@
+<form stopValidation [formGroup]="locationForm">
+
+    <input type="text" class="form-control" formControlName="location" (blur)="onBlur()" (focus)="onFocus();" [(ngModel)]="currentLocation.name">
+    <div class="panel panel-default panel-body datalist" *ngIf="loading">
+        <i class="fa fa-refresh fa-spin fa-fw"></i>
+    </div>
+    
+    <div class="panel panel-default panel-body datalist" *ngIf="!loading && currentLocation.name != '' && locationList.length > 0 && !(locationList.length == 1 && locationList[0].description == currentLocation.name)">
+        <ul>
+            <li *ngFor="let loc of locationList"><a (click)="changeLocation(loc)">{{ loc.description }}</a></li>
+        </ul>
+    </div>
+
+</form>

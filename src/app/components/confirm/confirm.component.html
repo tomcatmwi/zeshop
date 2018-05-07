@@ -1,0 +1,19 @@
+<ng-template #confirmbox>
+
+    <div class="confirm-box-parent" *ngIf="data?.show">
+        <div class="confirm-box">
+            <div [innerHTML] = "data.text"></div>
+            <div class="button-bar">
+                <button 
+                    *ngFor="let button of data.buttons"
+                    [ngClass]="'btn btn-default '+button.class"
+                    (click)="setValue(button.value)"
+                    >
+                    {{ button.label }}
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="darken" (click)="setValue(null)" *ngIf="data?.show"></div>
+</ng-template>

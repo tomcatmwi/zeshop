@@ -1,0 +1,230 @@
+<main>
+    <div class="container">
+
+        <h1>{{ formTitle }}</h1>
+
+        <form stopValidation [formGroup]="form">
+            <input type="hidden" formControlName="_id">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="form-group row no-bottom-margin">
+
+                        <label for="title" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-2">
+                            <select formControlName="title" class="form-control" id="title">
+                                <option *ngFor="let item of _storageService.values?.titles" [value]="item">{{ item }}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="First" formControlName="firstname" class="form-control">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" placeholder="Middle" formControlName="middlename" class="form-control">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="Last" formControlName="lastname" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10">
+
+                            <div *ngIf="form.controls.firstname.dirty && form.controls.firstname.touched &&
+                                                        form.controls.lastname.dirty && form.controls.lastname.touched && 
+                                                        form.hasError('name')" [innerHTML]="form.errors.nameErrorMessage"
+                                class="alert alert-danger"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 control-label">E-mail</label>
+                        <div class="col-sm-10">
+                            <input type="text" formControlName="email" class="form-control" id="email">
+                            <div *ngIf="form.controls.email.touched && form.controls.email.errors" class="alert alert-danger" [innerHTML]="form.controls.email.errors.errorMsg"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row no-bottom-margin">
+                        <label for="phone_country" class="col-sm-2 control-label">Phone</label>
+                        <div class="col-sm-2">
+                            <select formControlName="phone_country" class="form-control" id="phone_country">
+                                <option *ngFor="let item of phone_countries" [value]="item.id">+{{ item.phonecode }} ({{ item.nameeng }})</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" placeholder="District/provider" formControlName="phone_district" class="form-control">
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="Calling number" formControlName="phone_number" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10">
+                            <div *ngIf="form.controls.phone_district.dirty && form.controls.phone_district.touched && 
+                                                    form.controls.phone_number.dirty && form.controls.phone_number.touched && 
+                                                    form.hasError('phone')" [innerHTML]="form.errors.phoneErrorMessage"
+                                class="alert alert-danger"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="address_country" class="col-sm-2 control-label">Country</label>
+                        <div class="col-sm-10">
+                            <select (change)="hasStates();" formControlName="address_country" class="form-control" id="address_country">
+                                <option *ngFor="let item of countries" [value]="item.id">{{ item.nameeng }}
+                                    <span *ngIf="item.nameeng != item.name">({{ item.name }})</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="states.length > 0">
+                        <label for="address_state" class="col-sm-2 control-label">State / Province</label>
+                        <div class="col-sm-10">
+
+                            <select formControlName="address_state" class="form-control" id="address_state">
+                                <option *ngFor="let item of states" [value]="item.id">{{ item.name }}
+                                    <span *ngIf="item.english">({{ item.english }})</span>
+                                </option>
+                            </select>
+
+                            <div *ngIf="form.controls.address_state.touched && form.controls.address_state.errors" class="alert alert-danger" [innerHTML]="form.controls.address_state.errors.errorMsg"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row no-bottom-margin">
+                        <label for="address_city" class="col-sm-2 control-label">City and ZIP</label>
+                        <div class="col-sm-7">
+                            <input type="text" formControlName="address_city" class="form-control">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" formControlName="address_zip" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10">
+                            <div *ngIf="form.controls.address_city.dirty && form.controls.address_city.touched && 
+                                                    form.controls.address_zip.dirty && form.controls.address_zip.touched && 
+                                                    form.hasError('address_cityzip')" class="alert alert-danger" [innerHTML]="form.errors.addressCityZipErrorMessage"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="address_1" class="col-sm-2 control-label">Address line 1.</label>
+                        <div class="col-sm-10">
+                            <input type="text" formControlName="address_1" class="form-control">
+                            <div *ngIf="form.controls.address_1.touched && form.controls.address_1.errors" class="alert alert-danger" [innerHTML]="form.controls.address_1.errors.errorMsg"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="address_2" class="col-sm-2 control-label">Address line 2.</label>
+                        <div class="col-sm-10">
+                            <input type="text" formControlName="address_2" class="form-control">
+                            <div *ngIf="form.controls.address_2.touched && form.controls.address_2.errors" class="alert alert-danger" [innerHTML]="form.controls.address_2.errors.errorMsg"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="address_apt" class="col-sm-2 control-label">Suite / Apt.</label>
+                        <div class="col-sm-10">
+                            <input type="text" formControlName="address_apt" class="form-control">
+                            <div *ngIf="form.controls.address_apt.touched && form.controls.address_apt.errors" class="alert alert-danger" [innerHTML]="form.controls.address_apt.errors.errorMsg"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="address_instructions" class="col-sm-2 control-label">Delivery instructions</label>
+                        <div class="col-sm-10">
+                            <input type="text" formControlName="address_instructions" placeholder="" class="form-control">
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="form-group row">
+                        <label for="username" class="col-sm-2 control-label">Username</label>
+                        <div class="col-sm-10">
+                            <input type="text" formControlName="username" class="form-control">
+                            <div *ngIf="form.controls.username.touched && form.controls.username.errors" class="alert alert-danger" [innerHTML]="form.controls.username.errors.errorMsg"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row no-bottom-margin">
+                        <label for="password" class="col-sm-2 control-label">Password (twice)</label>
+                        <div class="col-sm-5">
+                            <input type="password" (change)="passwordChanged=true;" formControlName="password_1" class="form-control">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="password" (change)="passwordChanged=true;" formControlName="password_2" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10">
+                            <div *ngIf="form.controls.password_1.dirty && form.controls.password_1.touched && 
+                                    form.controls.password_2.dirty && form.controls.password_2.touched && 
+                                    form.hasError('password')" class="alert alert-danger" [innerHTML]="form.errors.passwordErrorMessage"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="level" class="col-sm-2 control-label">User level</label>
+                        <div class="col-sm-10">
+                            <select formControlName="level" class="form-control">
+                                <option *ngFor="let item of _storageService.values.levels" [value]="item.level">{{ item.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <checkbox [value]="true" [size]="1" formControlName="promotions" [label]="('Receives promotions and messages')">
+                            </checkbox>
+                        </div>
+                    </div>
+
+                    <div class="form-group row no-bottom-margin">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-10">
+                            <div class="alert" *ngIf="serverResponse && serverResponse.message != ''" [class.alert-success]="serverResponse && serverResponse.result == 'success'"
+                                [class.alert-danger]="serverResponse && serverResponse.result == 'error'">{{ serverResponse.message }}</div>
+
+                            <button [disabled]="!form.dirty || !form.valid" class="btn btn-primary" (click)="submitForm()">Submit</button>
+                            <button class="btn btn-default" routerLink="/users">Cancel</button>
+
+                            <spinner *ngIf="loading"></spinner>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</main>

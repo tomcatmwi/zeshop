@@ -1,0 +1,35 @@
+<confirmbox *ngIf="confirmBoxData?.show" [data]="confirmBoxData" (response)="confirmBoxHandler($event)"></confirmbox>
+
+<div class="container">
+    <h1>Message folders</h1>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <button [disabled]="loading" routerLink="/messagefolders_edit/0" class="btn btn-primary">Add new folder</button>
+            <button [disabled]="loading" routerLink="/messages" class="btn btn-default">Messages</button>
+        </div>
+    </div>
+
+    <spinner *ngIf="loading"></spinner>
+    <div class="alert alert-danger" (click)="this.data.result = 'pending'" *ngIf="!loading && data?.result == 'error'">{{ data?.message }}</div>
+
+    <!-- ------------------------------------------------------------------------------------------------------>
+
+    <table class="table">
+           <thead>
+            <tr>
+                <th>Folder name</th>
+                <th class="center">Messages</th>
+                <th class="tableglyph"></th>
+                <th class="tableglyph"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of data?.data, let rowIndex = index">
+                <td>{{ data?.name }}</td>
+                <td class="center">{{ data?.messages }}</td>
+                <td class="tableglyph"><a [routerLink]="'/messagefolders_edit/'+data?._id" class="fa fa-edit"></a></td>
+                <td class="tableglyph"><a (click)="delete(data?._id, rowIndex);" class="fa fa-remove"></a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

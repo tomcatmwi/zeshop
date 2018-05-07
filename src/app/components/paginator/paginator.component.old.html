@@ -1,0 +1,25 @@
+<nav aria-label="Page navigation" style="text-align: center;">
+    <ul class="pagination" *ngIf="pageData.totalRecords > pageData.recordPerPage">
+        <li>
+            <a class="paginator-button" aria-label="Previous" (click)="turnPage(-1);">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <li *ngFor="let number of totalRecordsNumbers, let i = index" [class.active]="i == pageData.startRecord" class="paginator-button">
+            <a class="paginator-button" (click)="turnPage(i);" *ngIf="i % pageData?.recordPerPage == 0 &&
+                           (i / pageData.recordPerPage) + 1 >= pageData.startPage &&
+                           (i / pageData?.recordPerPage) + 1 < (pageData.maxPages + pageData.startPage)
+                    ">
+
+                {{ (i / pageData.recordPerPage) + 1 }}
+            </a>
+        </li>
+
+        <li>
+            <a class="paginator-button" aria-label="Next" (click)="turnPage(1);">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

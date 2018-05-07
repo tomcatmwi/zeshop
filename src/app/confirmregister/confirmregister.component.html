@@ -1,0 +1,40 @@
+<div class="container">
+
+        <h1 *ngIf="outcome == 'pending'">Verifying registration</h1>
+        <h1 *ngIf="outcome == 'success'">Registration confirmed!</h1>
+        <h1 *ngIf="outcome == 'error'">Invalid registration</h1>
+
+        <div class="panel panel-default">
+
+            <div class="panel-body" *ngIf="outcome == 'pending'">
+                <p>Please wait, verifying registration...</p>
+                <spinner [spinnerSize]=2></spinner>
+            </div>
+            
+            <div class="panel-body" *ngIf="outcome == 'success'">
+                <p>Thank you. You can now log in and use our service.</p>
+                <div class="panel-body">
+                    <button routerLink="/login" class="btn btn-primary">Log in</button>
+                </div>
+            </div>
+            
+            <div class="panel-body" *ngIf="outcome == 'error'">
+                <p>It looks like your registration has failed to verify.</p>
+                <p>This may have been caused by one of the following reasons:</p>
+                <div>
+                    <ul>
+                        <li>You have already confirmed your registration.</li>
+                        <li>The verification code is invalid. Perhaps you copied it into your browser, but missed a character?</li>
+                        <li>You haven't confirmed your registration within 24 hours. In this case we already deleted it. Please try registering again.</li>
+                        <li>You haven't completed registration. Are you sure your browser finished submitting the form? Please try registering again.</li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <button routerLink="/login" class="btn btn-primary">Log in</button>
+                    <button routerLink="/register" class="btn btn-default">Register again</button>
+                </div>
+            </div>
+            
+        </div>
+
+</div>
