@@ -5,16 +5,13 @@ import {JSONService} from '../services/json.service';
 @Component({
     selector: 'mainmenu',
     templateUrl: './mainmenu.component.html',
-    styles: [`
-                .dropdownVisible {
-                    display: block;
-                }
-  ` ],
+    styleUrls: ['./mainmenu.component.css'],
     host: { '(document:click)': 'onClick($event)' }
 })
 
 export class MainmenuComponent {
 
+    showMenu = false;
     isCollapsed = true;
     menuOpen = 0;
     leaveOpen = false;

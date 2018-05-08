@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SpinnerComponent } from '../components/spinner/spinner.component';
 import { ConfirmComponent } from '../components/confirm/confirm.component';
 import { StorageService } from '../services/storage.service'
+import * as _ from "lodash";
 
 @Component({
     selector: 'users-edit',
@@ -47,6 +48,7 @@ export class UsersEditComponent implements OnInit {
 
         this.countries = this._storageService.sortArray(this._storageService.values.countries, 'nameeng');
         this.phone_countries = this._storageService.sortArray(this._storageService.values.countries, 'phonecode');
+        console.log(this.countries);
 
         //  create form
 

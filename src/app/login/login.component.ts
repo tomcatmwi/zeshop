@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
 
         //  get recaptcha key from server
 
-        let temp = this._jsonService.getJSON('/recaptcha')
+        const temp = this._jsonService.getJSON('/recaptcha')
             .finally(() => {
                 temp.unsubscribe();
                 this.loading = false;

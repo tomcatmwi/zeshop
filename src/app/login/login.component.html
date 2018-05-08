@@ -35,10 +35,8 @@
                     <div class="row">
                         <div class="col-lg-2 col-sm-12"></div>
                         <div class="col-lg-10 col-sm-12">
-                            <re-captcha 
-                                (resolved)="captcha = $event;"
-                                [siteKey]="recaptcha_data?.site_key">
-                            </re-captcha>
+                            <spinner *ngIf="!recaptcha_data"></spinner>
+                            <re-captcha *ngIf="recaptcha_data" (resolved)="captcha = $event;" [siteKey]="recaptcha_data?.site_key"></re-captcha>
                         </div>
                     </div>
                 </div>
@@ -51,10 +49,7 @@
                             <button [disabled]="!captcha || 
                                                 loading ||
                                                 !form.dirty || 
-                                                !form.valid" 
-                                    class="btn btn-primary"
-                                    type="button"
-                                    (click)="submitForm()">Login</button>
+                                                !form.valid" class="btn btn-primary" type="button" (click)="submitForm()">Login</button>
                             <spinner *ngIf="loading"></spinner>
                         </div>
                     </div>

@@ -43,10 +43,11 @@ export class StorageService {
     //  gets a temporary stored value from settings
 
     getSetting(token) {
-        if (this.settings.length <= 0) return null;
+        if (this.settings.length <= 0) { return null; }
         let temp = _.find(this.settings, { token: token });
-        if (!isNaN(temp.value)) { return Number(temp.value); }
-        else { return temp.value; }
+        if (typeof temp['value'] === 'undefined') { return null; }
+        if (!isNaN(temp['value'])) { return Number(temp['value']); }
+        else { return temp['value']; }
 
         // if (this.settings.length <= 0) return null;
         // var found = null;
@@ -69,15 +70,15 @@ export class StorageService {
                 temp.unsubscribe();
             })
             .subscribe(
-            data => {
-                if (data.result === 'success' && data.data.length > 0) {
-                    this.settings = data.data;
-                    this.settingsSubject.next(data.data);
-                } else {
-                    console.log('ERROR: Unable to load settings from server!');
-                }
-            },
-            error => { console.log('ERROR: No connection with server - settings can\'t be loaded!'); }
+                data => {
+                    if (data.result === 'success' && data.data.length > 0) {
+                        this.settings = data.data;
+                        this.settingsSubject.next(data.data);
+                    } else {
+                        console.log('ERROR: Unable to load settings from server!');
+                    }
+                },
+                error => { console.log('ERROR: No connection with server - settings can\'t be loaded!'); }
             );
 
     }
@@ -85,28 +86,38 @@ export class StorageService {
     //  ------- load countries from assets/countries.json -------
 
     loadValues() {
-
         let temp =
             this._http.get('assets/json/values.json')
                 .finally(() => {
                     temp.unsubscribe();
                 })
                 .subscribe(
-                data => {
-                    this.values = JSON.parse(data['_body']);
-                },
-                error => {
-                    console.log('ERROR: Can\'t load assets/values.json!');
-                }
+                    data => {
+                        this.values = JSON.parse(data['_body']);
+                    },
+                    error => {
+                        console.log('ERROR: Can\'t load assets/values.json!');
+                    }
                 );
 
     }
 
     //  ------- array sorter -------
 
-    sortArray(source: any[], key, sortOrder = 1, makeUnique = false) {
+    sortArray(source: any[],
+            key,
+            sortOrder = 1,
+            makeUnique = false,
+            locale = 'en',
+            options = { numeric: true, caseFirst: 'upper', ignorePunctuation: true }
+        ) {
         if (!Array.isArray(source) || source.length === 0 || typeof source[0][key] === 'undefined') { return false; }
-        let result = _.sortBy(source, [key]);
+
+        //  slice() is needed because mysteriously it doesn't work any other way!
+        let result = source.slice().sort((a, b) => {
+            return a[String(key)].localeCompare(b[String(key)], locale, options);
+        });
+
         if (sortOrder !== 1) { result = _.reverse(result); }
         if (makeUnique) { result = _.uniqWith(result, _.isEqual); }
         return result;
