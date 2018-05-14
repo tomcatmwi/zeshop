@@ -23,34 +23,36 @@ export class MessageFoldersEditComponent implements OnInit {
         private _router: Router,
         private _activatedRoute: ActivatedRoute
     ) {}
-    
+
     ngOnInit() {
-        
-        var temp = this._activatedRoute.params
+
+        const temp = this._activatedRoute.params
             .subscribe(data => {
                 this.form = this._fb.group({
                     _id: [data['id'], FormValidators.required],
                     name: ['', Validators.compose([
                         FormValidators.required,
                         FormValidators.minLength(5)
-                    ])]
+                    ])],
+                    prot: [false]
                 });
-                
-                if (data['id'] == 0)
+
+                if (data['id'] == 0) {
                     this.formTitle = 'New message folder'
-                else {
+                } else {
                     this.loading = true;
                     this.formTitle = 'Edit message folder'
 
-                    var temp2 = this._jsonService.getJSON('/messagefolders/'+data['id'])
+                    const temp2 = this._jsonService.getJSON('/messagefolders/'+data['id'])
                         .finally(() => {
                             temp2.unsubscribe();
                             this.loading = false;
                         })
                         .subscribe(data => {
-                            if (data.result == 'success') {
+                            if (data.result === 'success') {
                                 this.form.controls['_id'].setValue(data.data[0]._id);
                                 this.form.controls['name'].setValue(data.data[0].name);
+                                this.form.controls['prot'].setValue(data.data[0].protected);
                                 this.form.markAsDirty();
                             } else {
                                 this.serverResponse = data;
@@ -58,7 +60,7 @@ export class MessageFoldersEditComponent implements OnInit {
                             }
                         });
                 }
-                
+
             },
             () => { this.loading = false; }
             )
@@ -67,17 +69,17 @@ export class MessageFoldersEditComponent implements OnInit {
     submitForm() {
 
         this.loading = true;
-        var formData = this.form.value;
+        const formData = this.form.value;
         this.serverResponse = null;
-        
-        var temp = this._jsonService.postJSON('/messagefolders', formData)
+
+        const temp = this._jsonService.postJSON('/messagefolders', formData)
             .finally(() => {
                 temp.unsubscribe();
                 this.loading = false;
             })
             .subscribe(data => {
                 this.serverResponse = data;
-                if (data.result == 'success') {
+                if (data.result === 'success') {
                     this._router.navigate(['messagefolders']);
                 }
             });

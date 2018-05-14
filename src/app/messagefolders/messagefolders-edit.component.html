@@ -1,14 +1,14 @@
 <div class="container">
 
+    <h1>{{ formTitle }}</h1>
+
     <form class="form-horizontal" stopValidation [formGroup]="form">
-    <input type="hidden" formControlName="_id">
+        <input type="hidden" formControlName="_id">
 
-          <h1>{{ formTitle }}</h1>
+        <div class="card">
+            <div class="card-body">
 
-        <div class="panel panel-default">
-            <div class="panel-body">
-
-                <div class="form-group">
+                <div class="form-group row">
                     <label for="name" class="col-sm-2 control-label">Folder name</label>
                     <div class="col-sm-10">
                         <input type="text" formControlName="name" class="form-control">
@@ -16,25 +16,31 @@
                     </div>
                 </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label"></label>
-                <div class="col-sm-10">
-                    <div class="alert" *ngIf="serverResponse && serverResponse.message != ''"
-                         [class.alert-success]="serverResponse && serverResponse.result == 'success'" 
-                         [class.alert-danger]="serverResponse && serverResponse.result == 'error'"
-                         >{{ serverResponse.message }}</div>
-                    
-                    <button [disabled]="!form.dirty || !form.valid" class="btn btn-primary" (click)="submitForm()">Submit</button>
-                    <button class="btn btn-default" routerLink="/messagefolders">Cancel</button>
-                    
-                    <spinner *ngIf="loading"></spinner>
-                    
+                <div class="form-group row">
+                    <div class="col-sm-2 control-label"></div>
+                    <div class="col-sm-10">
+                        <checkbox [value]="true" [size]="1" formControlName="prot" [label]="('Protected folder')">
+                        </checkbox>
+                    </div>
                 </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <div class="alert" *ngIf="serverResponse && serverResponse.message != ''" [class.alert-success]="serverResponse && serverResponse.result == 'success'"
+                            [class.alert-danger]="serverResponse && serverResponse.result == 'error'">{{ serverResponse.message }}</div>
+
+                        <button [disabled]="!form.dirty || !form.valid" class="btn btn-primary" (click)="submitForm()">Submit</button>
+                        <button class="btn btn-default" routerLink="/messagefolders">Cancel</button>
+
+                        <spinner *ngIf="loading"></spinner>
+
+                    </div>
+                </div>
+
             </div>
-
         </div>
-    </div>
 
-</form>
+    </form>
 
 </div>

@@ -1,4 +1,74 @@
 {
+    "APIURL": "http://localhost:3001",
+    "default_locale": "en-ca",
+    "locales": [
+        {
+            "id": "en-us",
+            "name": "English (US)",
+            "localeFile": "english",
+            "dateLong": "Do MMMM YYYY",
+            "dateShort": "D MMM YYYY",
+            "dateInformal": "DD-MM-YYYY",
+            "timeLong": "hh:mm:ss A",
+            "timeShort": "hh:mm A",
+            "measurements": "imperial"
+        },
+        {
+            "id": "en-gb",
+            "name": "English (UK)",
+            "localeFile": "english",
+            "dateLong": "Do MMMM YYYY",
+            "dateShort": "D MMM YYYY",
+            "dateInformal": "DD/MM/YYYY",
+            "timeLong": "hh:mm:ss A",
+            "timeShort": "hh:mm A",
+            "measurements": "metric"
+        },
+        {
+            "id": "en-ca",
+            "name": "English (Canada)",
+            "localeFile": "english",
+            "dateLong": "YYYY MMMM Do",
+            "dateShort": "YYYY MMM D",
+            "dateInformal": "YYYY/MM/DD",
+            "timeLong": "hh:mm:ss A",
+            "timeShort": "hh:mm A",
+            "measurements": "metric"
+        },
+        {
+            "id": "fr-ca",
+            "name": "French (Canada)",
+            "localeFile": "french",
+            "dateLong": "Do MMMM YYYY",
+            "dateShort": "D MMM YYYY",
+            "dateInformal": "DD/MM/YYYY",
+            "timeLong": "HH:mm:ss",
+            "timeShort": "HH:mm",
+            "measurements": "metric"
+        },
+        {
+            "id": "fr",
+            "name": "French",
+            "localeFile": "french",
+            "dateLong": "Do MMMM YYYY",
+            "dateShort": "D MMM YYYY",
+            "dateInformal": "DD/MM/YYYY",
+            "timeLong": "HH:mm:ss",
+            "timeShort": "HH:mm",
+            "measurements": "metric"
+        },
+        {
+            "id": "hu",
+            "name": "Hungarian",
+            "localeFile": "hungarian",
+            "dateLong": "YYYY MMMM Do",
+            "dateShort": "YYYY MMM D",
+            "dateInformal": "YYYY-MM-DD",
+            "timeLong": "HH:mm:ss",
+            "timeShort": "HH:mm",
+            "measurements": "metric"
+        }
+    ],
     "levels": [
         {
             "level": -1,

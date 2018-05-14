@@ -12,6 +12,8 @@ import { SettingGroupsEditComponent } from './settinggroups/settinggroups-edit.c
 import { UsersComponent } from './users/users.component';
 import { UsersEditComponent } from './users/users-edit.component';
 import { MessagesComponent } from './messages/messages.component';
+import { MessageFoldersComponent } from './messagefolders/messagefolders.component';
+import { MessageFoldersEditComponent } from './messagefolders/messagefolders-edit.component';
 
 export const routing = RouterModule.forRoot([
 
@@ -35,6 +37,9 @@ export const routing = RouterModule.forRoot([
     { path: 'users-edit', component: UsersEditComponent, pathMatch: 'full', canActivate: [LoginCheck], data: { userLevel: 2 } },
     { path: 'users-edit/:id', component: UsersEditComponent, pathMatch: 'full', canActivate: [LoginCheck], data: { userLevel: 2 } },
     { path: 'messages', component: MessagesComponent, pathMatch: 'full', canActivate: [LoginCheck], data: { userLevel: 2 } },
+    { path: 'messagefolders', component: MessageFoldersComponent, pathMatch: 'full', canActivate: [LoginCheck], data: { userLevel: 2 } },
+    { path: 'messagefolders-edit/:id', component: MessageFoldersEditComponent, pathMatch: 'full', canActivate: [LoginCheck], data: { userLevel: 2 } },
+    { path: 'messagefolders-edit', component: MessageFoldersEditComponent, pathMatch: 'full', canActivate: [LoginCheck], data: { userLevel: 2 } },
     
 //  all the rest
         

@@ -1,22 +1,18 @@
 import { Injectable, Injector, OnInit } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { StorageService } from './storage.service';
 import 'rxjs/Rx';
 import 'rxjs/add/observable/of';
 
 @Injectable()
 export class JSONService {
 
-    baseURL;
-
     constructor(
         private _http: Http,
         private _router: Router,
-        location: Location
-    ) {
-        this.baseURL = 'http://'+location['_platformStrategy']['_platformLocation']['location']['hostname']+':3001';
-    }
+        private _storageService: StorageService
+    ) {}
 
     // tslint:disable-next-line:member-ordering
     private _requestOptions = new RequestOptions({
@@ -50,7 +46,7 @@ export class JSONService {
     getJSON(subURL) {
         subURL = this._fixSubURL(subURL);
         return (
-            this._http.get(this.baseURL + subURL, this._requestOptions)
+            this._http.get(this._storageService.values.APIURL + subURL, this._requestOptions)
                 .map(result => this.checkData(result))
         );
     }
@@ -58,7 +54,7 @@ export class JSONService {
     postJSON(subURL, content) {
         subURL = this._fixSubURL(subURL);
         return (
-            this._http.post(this.baseURL + subURL, content, this._requestOptions)
+            this._http.post(this._storageService.values.APIURL + subURL, content, this._requestOptions)
                 .map(result => this.checkData(result))
         );
     }
@@ -66,16 +62,15 @@ export class JSONService {
     putJSON(subURL, content) {
         subURL = this._fixSubURL(subURL);
         return (
-            this._http.put(this.baseURL + subURL, content, this._requestOptions)
+            this._http.put(this._storageService.values.APIURL + subURL, content, this._requestOptions)
                 .map(result => this.checkData(result))
         );
     }
 
-
     deleteJSON(subURL) {
         subURL = this._fixSubURL(subURL);
         return (
-            this._http.delete(this.baseURL + subURL, this._requestOptions)
+            this._http.delete(this._storageService.values.APIURL + subURL, this._requestOptions)
                 .map(result => this.checkData(result))
         );
     }

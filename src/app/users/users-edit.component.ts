@@ -48,7 +48,6 @@ export class UsersEditComponent implements OnInit {
 
         this.countries = this._storageService.sortArray(this._storageService.values.countries, 'nameeng');
         this.phone_countries = this._storageService.sortArray(this._storageService.values.countries, 'phonecode');
-        console.log(this.countries);
 
         //  create form
 

@@ -36,7 +36,7 @@
                         <div class="col-lg-2 col-sm-12"></div>
                         <div class="col-lg-10 col-sm-12">
                             <spinner *ngIf="!recaptcha_data"></spinner>
-                            <re-captcha *ngIf="recaptcha_data" (resolved)="captcha = $event;" [siteKey]="recaptcha_data?.site_key"></re-captcha>
+                            <re-captcha *ngIf="recaptcha_data && recaptcha_data?.active" (resolved)="captcha = $event;" [siteKey]="recaptcha_data?.site_key"></re-captcha>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                         <div class="col-lg-2 col-sm-12"></div>
                         <div class="col-lg-10 col-sm-12">
                             <div class="alert" *ngIf="serverResponse && serverResponse?.message != ''" (click)="serverResponse = null" [class.alert-danger]="serverResponse && serverResponse.result == 'error'">{{ serverResponse.message }}</div>
-                            <button [disabled]="!captcha || 
+                            <button [disabled]="(!captcha && recaptcha_data?.active) || 
                                                 loading ||
                                                 !form.dirty || 
                                                 !form.valid" class="btn btn-primary" type="button" (click)="submitForm()">Login</button>

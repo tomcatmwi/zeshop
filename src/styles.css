@@ -4,6 +4,10 @@
 
 body {
     overflow-x: hidden;
+    background-color: #fff;
+    background-image: url(assets/img/grid.png);
+    background-repeat: repeat-x;
+    background-position: 0 0px;    
 }
 
 nav {

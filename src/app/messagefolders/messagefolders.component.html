@@ -1,16 +1,86 @@
 <confirmbox *ngIf="confirmBoxData?.show" [data]="confirmBoxData" (response)="confirmBoxHandler($event)"></confirmbox>
 
 <div class="container">
-    <h1>Message folders</h1>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <button [disabled]="loading" routerLink="/messagefolders_edit/0" class="btn btn-primary">Add new folder</button>
-            <button [disabled]="loading" routerLink="/messages" class="btn btn-default">Messages</button>
-        </div>
-    </div>
 
-    <spinner *ngIf="loading"></spinner>
-    <div class="alert alert-danger" (click)="this.data.result = 'pending'" *ngIf="!loading && data?.result == 'error'">{{ data?.message }}</div>
+        <h1>Message folders</h1>
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item" style="border: 0px;">
+                <a class="nav-link" [class.active]="menutab==1" (click)="menutab=1">Operations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="menutab==2" (click)="menutab=2">Sort & filter</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="menutab==3" (click)="menutab=3">Search</a>
+            </li>
+        </ul>
+    
+        <div class="card card-tabbed" *ngIf="menutab==1">
+            <div class="card-body">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <button [disabled]="loading" routerLink="/messagefolders-edit/0" class="btn btn-primary">New folder</button>
+                        <spinner *ngIf="loading"></spinner>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+        <div class="card card-tabbed" *ngIf="menutab==2">
+            <div class="card-body">
+                <form>
+                    <div class="row inline-form">
+                        <div class="col-lg-3">
+                            <select [(ngModel)]="viewSettings.sortField" name="sortField" class="form-control">
+                                <option value="1">By name</option>
+                                <option value="2">By creation date</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <select [(ngModel)]="viewSettings.sortMode" name="sortMode" class="form-control">
+                                <option value="-1">Increasing</option>
+                                <option value="1">Decreasing</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <button [disabled]="loading" (click)="loadData();" class="btn btn-primary">Sort</button>
+                            <spinner *ngIf="loading"></spinner>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+        <div class="card card-tabbed" *ngIf="menutab==3">
+            <div class="card-body">
+                <form>
+                    <div class="row inline-form">
+                        <div class="col-lg-4">
+                            <select [(ngModel)]="viewSettings.searchMode" name="searchMode" class="form-control">
+                                <option value="1">Contains</option>
+                                <option value="2">Starts with</option>
+                                <option value="3">Exactly matches</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <input type="text" [(ngModel)]="viewSettings.searchText" name="searchText" placeholder="Enter search term..." class="form-control"
+                            />
+                        </div>
+                        <div class="col-lg-4">
+                            <button [disabled]="loading" (click)="loadData()" class="btn btn-primary">Search</button>
+                            <spinner *ngIf="loading"></spinner>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+        <div class="alert alert-danger" (click)="this.data.result = 'pending'" *ngIf="!loading && data?.result == 'error'">{{ data?.message }}</div>
+    
+        <div class="paginator-holder">
+            <paginator  *ngIf="this.data?.data" [totalRecords]="data?.data.length" [(ngModel)]="pageData"></paginator>
+        </div>
 
     <!-- ------------------------------------------------------------------------------------------------------>
 
@@ -19,15 +89,20 @@
             <tr>
                 <th>Folder name</th>
                 <th class="center">Messages</th>
+                <th class="tablecol-600">Date</th>
                 <th class="tableglyph"></th>
                 <th class="tableglyph"></th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let data of data?.data, let rowIndex = index">
-                <td>{{ data?.name }}</td>
+                <td>
+                    <span *ngIf="data?.protected" class="fa fa-lock"></span>
+                    {{ data?.name }}
+                </td>
                 <td class="center">{{ data?.messages }}</td>
-                <td class="tableglyph"><a [routerLink]="'/messagefolders_edit/'+data?._id" class="fa fa-edit"></a></td>
+                <td class="tablecol-600">{{ data?.created | amDateFormat: _storageService.getLocale()['dateShort'] }}</td>
+                <td class="tableglyph"><a [routerLink]="'/messagefolders-edit/'+data?._id" class="fa fa-edit"></a></td>
                 <td class="tableglyph"><a (click)="delete(data?._id, rowIndex);" class="fa fa-remove"></a></td>
             </tr>
         </tbody>
