@@ -47,7 +47,7 @@ export class StorageService {
                 })
                 .subscribe(
                     data => {
-                        let result = JSON.parse(data._body);
+                        let result = JSON.parse((<any>data)._body);
                         if (result.result === 'success' && result.data.length > 0) {
                             this.settings = result.data;
                         } else {
@@ -116,7 +116,7 @@ export class StorageService {
 
     getSetting(token) {
         try {
-            let found = _.find(this.settings[0].settings, { 'token': token }).value || null;
+            let found = (<any>_.find(this.settings[0].settings, { 'token': token })).value || null;
             if (found != null && !isNaN(found)) { found = Number(found); }
             return found;
         } catch (e) {
@@ -158,9 +158,9 @@ export class StorageService {
     getLocale() {
 
         try {
-            let localeName = this.getSetting('locale');
+            var localeName = this.getSetting('locale');
         } catch (e) {
-            localeName = this.values.locales.default_locale;
+            var localeName = this.values.locales.default_locale;
         }
 
         return _.find(this.values.locales, { 'id': localeName.toLowerCase() });

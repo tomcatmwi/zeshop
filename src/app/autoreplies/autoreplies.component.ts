@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { JSONService } from '../services/json.service';
 
 @Component({
-  selector: 'app-autoreplies',
+  selector: 'autoreplies',
   templateUrl: './autoreplies.component.html',
   styleUrls: ['./autoreplies.component.css']
 })
-export class AutorepliesComponent implements OnInit {
+export class AutoRepliesComponent implements OnInit {
 
   constructor(private _jsonService: JSONService) { }
   data;
@@ -16,7 +16,7 @@ export class AutorepliesComponent implements OnInit {
   ngOnInit() {
       this.loadData();
   }
-  
+
   loadData() {
       this.loading = true;
       var temp = this._jsonService.getJSON('/autoreplies')
@@ -40,20 +40,20 @@ export class AutorepliesComponent implements OnInit {
                  ]
     }
   }
-  
+
   confirmBoxHandler(stuff) {
       this.data.result = 'pending';
-      if (stuff == null) return false;
-      
+      if (stuff == null) { return false; }
+
       this.loading = true;
-      var temp = this._jsonService.deleteJSON('/autoreplies/'+stuff.id)
+      const temp = this._jsonService.deleteJSON('/autoreplies/'+stuff.id)
           .finally(() => {
-              temp.unsubscribe;
+              temp.unsubscribe();
               this.loading = false;
           })
           .subscribe(data => {
               this.data.result = data.result;
-              if (data.result == 'error') {
+              if (data.result === 'error') {
                   this.data.message = data.message;
               } else {
                   this.data.data.splice(stuff.rowIndex, 1);

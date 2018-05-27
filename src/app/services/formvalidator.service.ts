@@ -173,10 +173,26 @@ export class FormValidators {
         return null;
     }
 
+    static orderCode(allowBlank = true) {
+        return(control: FormControl) => {
+            const regex = /[a-zA-Z]{4}-[0-9]{4}/ig;
+
+            if ((allowBlank == false && (control.value == '' || control.value == null)) ||
+               (control.value != '' && control.value != null && !regex.test(control.value))) {
+                return { 'orderCode': false, 'errorMsg': 'A valid order code consists of 4 letters, a dash (-) and 4 digits.' }
+            }
+
+            if (allowBlank && (control.value == '' || control.value == null)) {
+                return null;
+            }
+
+            return null;
+        }
+    }
+    
 //  -----------------------------------------------------------------------------------------------------
 //  Special validators for multiple form fields
 //  -----------------------------------------------------------------------------------------------------
-
 
     static validatePhone(phoneDistrictKey: string, phoneNumberKey) {
         return (group: FormGroup): {[key: string]: any} => {

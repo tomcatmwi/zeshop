@@ -4,8 +4,7 @@
     <h1>Predefined reply messages</h1>
     <div class="panel panel-default">
         <div class="panel-body">
-            <button [disabled]="loading" routerLink="/autoreplies_edit/0" class="btn btn-primary">Add new message</button>
-            <button [disabled]="loading" routerLink="/messages" class="btn btn-default">Messages</button>
+            <button [disabled]="loading" routerLink="/autoreplies-edit/0" class="btn btn-primary">Add new message</button>
         </div>
     </div>
 
@@ -17,18 +16,20 @@
     <table class="table">
            <thead>
             <tr>
-                <th>Message content</th>
-                <th>Token</th>
-                <th class="tablecol-600">Message subject</th>
+                <th class="tablecol-600">Description</th>
+                <th>Subject</th>
+                <th class="tablecol-600">Token</th>
+                <th class="tablecol-600" class="center">Priority</th>
                 <th class="tableglyph"></th>
                 <th class="tableglyph"></th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let data of data?.data, let rowIndex = index">
-                <td>{{ data?.content }}</td>
-                <td>{{ data?.token }}</td>
+                <td class="tablecol-600">{{ data?.description }}</td>
+                <td>{{ data?.subject }}</td>
                 <td class="tablecol-600">{{ data?.token }}</td>
+                <td class="tablecol-600" class="center">{{ data?.priority }}</td>
                 <td class="tableglyph"><a [routerLink]="'/autoreplies_edit/'+data?._id" class="fa fa-edit"></a></td>
                 <td class="tableglyph"><a (click)="delete(data?._id, rowIndex);" class="fa fa-remove"></a></td>
             </tr>

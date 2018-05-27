@@ -24,8 +24,9 @@ import { UsersEditComponent } from './users/users-edit.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MessageFoldersComponent } from './messagefolders/messagefolders.component';
 import { MessageFoldersEditComponent } from './messagefolders/messagefolders-edit.component';
-import { AutorepliesComponent } from './autoreplies/autoreplies.component';
-import { AutorepliesEditComponent } from './autoreplies/autoreplies-edit.component';
+import { AutoRepliesComponent } from './autoreplies/autoreplies.component';
+import { AutoRepliesEditComponent } from './autoreplies/autoreplies-edit.component';
+import { MessageSendComponent } from './messages/message-send.component';
 
 //  Helper components
 import { AppComponent } from './app.component';
@@ -39,7 +40,6 @@ import { GoogleMapsComponent } from './components/googlemaps/googlemaps.componen
 import { UserSelectComponent } from './components/userselect/userselect.component';
 import { ShowMapComponent } from './components/showmap/showmap.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
-import { MailerComponent } from './components/mailer/mailer.component';
 import { RicheditComponent } from './components/richedit/richedit.component';
 
 //  Services
@@ -72,7 +72,6 @@ export function loadValues(storageService: StorageService) {
         UserSelectComponent,
         ShowMapComponent,
         CheckboxComponent,
-        MailerComponent,
         RicheditComponent,
 
         FormatNumberPipe,
@@ -92,7 +91,9 @@ export function loadValues(storageService: StorageService) {
         MessagesComponent,
         MessageFoldersComponent,
         MessageFoldersEditComponent,
-        AutorepliesEditComponent
+        AutoRepliesComponent,
+        AutoRepliesEditComponent,
+        MessageSendComponent
     ],
     imports: [
         BrowserModule,

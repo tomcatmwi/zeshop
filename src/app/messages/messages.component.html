@@ -1,59 +1,86 @@
 <confirmbox *ngIf="confirmBoxData?.show" [data]="confirmBoxData" (response)="confirmBoxHandler($event)"></confirmbox>
-<mailer></mailer>
 
 <div class="container">
     <h1>Messages</h1>
 
     <ul class="nav nav-tabs">
-        <li role="presentation" [class.active]="menutab==1"><a (click)="menutab=1">Date & folder</a></li>
-        <li role="presentation" [class.active]="menutab==2"><a (click)="menutab=2">Search</a></li>
+        <li class="nav-item" style="border: 0px;">
+            <a class="nav-link" [class.active]="menutab==1" (click)="menutab=1">Date & folder</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="menutab==2" (click)="menutab=2">Search</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="menutab==3" (click)="menutab=3">Operations</a>
+        </li>
     </ul>
 
-    <div class="panel panel-default" *ngIf="menutab==1">
-        <div class="panel-body">
-            <form class="form-inline">
-                <div class="form-group">
-                    <datetimepicker (change)="setDate($event.date);" [startYear]="2017" [endYear]="2060"></datetimepicker>
-                </div>
-                <div class="form-group">
-                    <spinner *ngIf="!folders"></spinner>
-                    <p class="alert alert-small alert-danger" *ngIf="folders && folders.result === 'error'">{{ folders.message }}</p>
-                    <select class="form-control" [(ngModel)]="viewSettings.folder" (change)="loadData();" *ngIf="folders && folders.result != 'error'" name="folder">
-                        <option value="0">-- Incoming messages --</option>
-                        <option *ngFor="let folder of folders" [value]="folder._id">{{ folder.name }}</option>
-                    </select>
-                    <spinner *ngIf="loading"></spinner>
+    <div class="card card-tabbed" *ngIf="menutab==1">
+        <div class="card-body">
+            <form>
+                <div class="row inline-form">
+                    <div class="col-lg-7">
+                        <datetimepicker (change)="setDate($event.date);"
+                            [showTime]="false"
+                            [startYear]="2017"
+                            [endYear]="2060">
+                        </datetimepicker>
+                    </div>
+                    <div class="col-lg-5">
+                        <spinner *ngIf="!folders"></spinner>
+                        <p class="alert alert-small alert-danger" *ngIf="folders && folders.result === 'error'">{{ folders.message }}</p>
+                        <select class="form-control" [(ngModel)]="viewSettings.folder" (change)="loadData();" *ngIf="folders && folders.result != 'error'"
+                            name="folder">
+                            <option value="0">-- Incoming messages --</option>
+                            <option *ngFor="let folder of folders" [value]="folder._id">{{ folder.name }}</option>
+                        </select>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="panel panel-default" *ngIf="menutab==2">
-        <div class="panel-body">
+    <div class="card card-tabbed" *ngIf="menutab==2">
+        <div class="card-body">
+            <form>
+                <div class="row inline-form">
+                    <div class="col-lg-3">
+                        <select [(ngModel)]="viewSettings.searchField" name="searchField" class="form-control">
+                            <option value="0">Any field</option>
+                            <option value="1">Subject line</option>
+                            <option value="2">Message body</option>
+                            <option value="3">Name of sender</option>
+                            <option value="4">Order code</option>
+                            <option value="5">E-mail address</option>
+                            <option value="6">IP address</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <select [(ngModel)]="viewSettings.searchMode" name="searchMode" class="form-control">
+                            <option value="0">Contains</option>
+                            <option value="1">Starts with</option>
+                            <option value="2">Exactly matches</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="text" [(ngModel)]="viewSettings.searchText" name="searchText" placeholder="Enter search term..." class="form-control"
+                        />
+                    </div>
+                    <div class="col-lg-2">
+                        <button (click)="loadData()" class="btn btn-primary">Search</button>
+                        <spinner *ngIf="loading"></spinner>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="card card-tabbed" *ngIf="menutab==3">
+        <div class="card-body">
             <form class="form-inline">
                 <div class="form-group">
-                    <select [(ngModel)]="viewSettings.searchField" name="searchField" class="form-control">
-                        <option value="1">Any field</option>
-                        <option value="2">Message text</option>
-                        <option value="3">Name of sender</option>
-                        <option value="4">Order code</option>
-                        <option value="5">E-mail address</option>
-                        <option value="6">IP address</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select [(ngModel)]="viewSettings.searchMode" name="searchMode" class="form-control">
-                        <option value="1">Contains</option>
-                        <option value="2">Starts with</option>
-                        <option value="3">Exactly matches</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="text" [(ngModel)]="viewSettings.searchText" name="searchText" placeholder="Enter search term..." class="form-control" />
-                </div>
-                <div class="form-group">
-                    <button (click)="loadData()" class="btn btn-primary">Search</button>
-                    <spinner *ngIf="loading"></spinner>
+                    <button routerLink="/messagesend" class="btn btn-primary">New message</button>
                 </div>
             </form>
         </div>
@@ -65,33 +92,42 @@
         <div class="col-xs-5 col-sm-5 col-md-5 col-lg-2 msgpanel sidebar">
 
             <div class="buttonbar">
-                <b>{{ data.name }}</b><br />
-                {{ data.date | date:'hh:mm:ss' }}<br />
-                {{ data.email }}<br />
-                +{{ data.phone1 }} {{ data.phone2 }} {{ data.phone3 }}
+                <b>{{ data.name }}</b>
+                <br /> {{ data.date | date:'hh:mm:ss' }}
+                <br /> {{ data.email }}
+                <br /> +{{ data.phone1 }} {{ data.phone2 }} {{ data.phone3 }}
             </div>
 
             <div class="buttonbar">
-                <button class="btn btn-default iconbtn" (click)="deleteMessage(data._id)"><i class="fa fa-remove"></i></button>
-                <button class="btn btn-default iconbtn"><i class="fa fa-edit"></i></button>
-                <button class="btn btn-default iconbtn"><i class="fa fa-envelope"></i></button>
+                <button class="btn btn-default iconbtn" (click)="deleteMessage(data._id)">
+                    <i class="fa fa-remove"></i>
+                </button>
+                <button class="btn btn-default iconbtn">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-default iconbtn">
+                    <i class="fa fa-envelope"></i>
+                </button>
             </div>
 
             <div class="buttonbar">
-                <div *ngIf="data.ordercode != ''"><a href="#">{{ data.ordercode }}</a></div>
+                <div *ngIf="data.ordercode != ''">
+                    <a href="#">{{ data.ordercode }}</a>
+                </div>
                 <div class="buttonbar-small">
                     {{ data.ip }}
                 </div>
                 <div class="buttonbar-small" *ngIf="data.ipLocation">
-                    {{ data.ipLocation.city }}, {{ data.ipLocation.country }}, {{ data.ipLocation.regionName }}<br />
-                    {{ data.ipLocation?.timezone }}<br />
-                    {{ data.ipLocation?.isp }}<br />
-                    {{ data.ipLocation?.org }}
+                    {{ data.ipLocation.city }}, {{ data.ipLocation.country }}, {{ data.ipLocation.regionName }}
+                    <br /> {{ data.ipLocation?.timezone }}
+                    <br /> {{ data.ipLocation?.isp }}
+                    <br /> {{ data.ipLocation?.org }}
                 </div>
             </div>
 
             <div class="buttonbar">
-                Automatic reply:<br />
+                Automatic reply:
+                <br />
                 <select class="form-control">
                     <option value="0">-- No automatic answer --</option>
                     <option *ngFor="let autoreply of autoreplies" [value]="autoreply._id">{{ autoreply.content }}</option>
@@ -99,8 +135,12 @@
             </div>
 
             <div class="buttonbar">
-                <button class="btn btn-default iconbtn"><i class="fa fa-question"></i></button>
-                <button class="btn btn-default iconbtn"><i class="fa fa-share"></i></button>
+                <button class="btn btn-default iconbtn">
+                    <i class="fa fa-question"></i>
+                </button>
+                <button class="btn btn-default iconbtn">
+                    <i class="fa fa-share"></i>
+                </button>
             </div>
 
             <div class="buttonbar">

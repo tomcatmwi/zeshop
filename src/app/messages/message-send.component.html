@@ -1,0 +1,108 @@
+<main>
+  <div class="container">
+
+    <h1>Send message</h1>
+
+    <form stopValidation [formGroup]="form">
+
+      <div class="card">
+        <div class="card-body">
+
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 control-label">Name of sender:</label>
+                <div class="col-sm-10">
+                    <input type="text" formControlName="name" class="form-control">
+                    <div *ngIf="form.controls.name.touched && form.controls.name.errors" class="alert alert-danger" [innerHTML]="form.controls.name.errors.errorMsg"></div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="email" class="col-sm-2 control-label">E-mail address:</label>
+                <div class="col-sm-10">
+                    <input type="text" formControlName="email" class="form-control">
+                    <div *ngIf="form.controls.email.touched && form.controls.email.errors" class="alert alert-danger" [innerHTML]="form.controls.email.errors.errorMsg"></div>
+                </div>
+            </div>
+
+            <div class="form-group row no-bottom-margin">
+                <label for="phone_country" class="col-sm-2 control-label">Phone</label>
+                <div class="col-sm-2">
+                    <select formControlName="phone_country" class="form-control" id="phone_country">
+                        <option *ngFor="let item of phone_countries" [value]="item.id">+{{ item.phonecode }} ({{ item.nameeng }})</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" placeholder="District/provider" formControlName="phone_district" class="form-control">
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="Calling number" formControlName="phone_number" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <div *ngIf="form.controls.phone_district.dirty && form.controls.phone_district.touched && 
+                                            form.controls.phone_number.dirty && form.controls.phone_number.touched && 
+                                            form.hasError('phone')" [innerHTML]="form.errors.phoneErrorMessage"
+                        class="alert alert-danger"></div>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="order_id" class="col-sm-2 control-label">Order code:</label>
+                <div class="col-sm-10">
+                    <input type="text" formControlName="order_id" placeholder="XXXX-0000" class="form-control">
+                    <div *ngIf="form.controls.order_id.touched && form.controls.order_id.errors" class="alert alert-danger" [innerHTML]="form.controls.order_id.errors.errorMsg"></div>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="subject" class="col-sm-2 control-label">Subject:</label>
+                <div class="col-sm-10">
+                    <input type="text" formControlName="subject" class="form-control">
+                    <div *ngIf="form.controls.subject.touched && form.controls.subject.errors" class="alert alert-danger" [innerHTML]="form.controls.subject.errors.errorMsg"></div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="body" class="col-sm-2 control-label">Message:</label>
+                <div class="col-sm-10">
+                    <textarea formControlName="body" rows=10 id="body" class="form-control"></textarea>
+                    <div *ngIf="form.controls.body.touched && form.controls.body.errors" class="alert alert-danger" [innerHTML]="form.controls.body.errors.errorMsg"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-2 col-sm-12"></div>
+                    <div class="col-lg-10 col-sm-12">
+                        <spinner *ngIf="!recaptcha_data"></spinner>
+                        <re-captcha *ngIf="recaptcha_data && recaptcha_data?.active" (resolved)="captcha = $event;" [siteKey]="recaptcha_data?.site_key"></re-captcha>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-2 col-sm-12"></div>
+                    <div class="col-lg-10 col-sm-12">
+                        <div class="alert" *ngIf="serverResponse && serverResponse?.message != ''" (click)="serverResponse = null" [class.alert-danger]="serverResponse && serverResponse.result == 'error'">{{ serverResponse.message }}</div>
+                        <button [disabled]="(!captcha && recaptcha_data?.active) || 
+                                            loading ||
+                                            !form.dirty || 
+                                            !form.valid" class="btn btn-primary"
+                                  type="button"
+                                  (click)="submitForm()">Send message</button>
+                        <button class="btn btn-default" routerLink="/messages">Cancel</button>
+                        <spinner *ngIf="loading"></spinner>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+      </div>
+
+  </form>
+  </div>
+</main>

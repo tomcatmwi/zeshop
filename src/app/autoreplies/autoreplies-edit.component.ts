@@ -12,11 +12,11 @@ import {RicheditComponent} from '../components/richedit/richedit.component';
     templateUrl: './autoreplies-edit.component.html',
     providers: [JSONService]
 })
-export class AutorepliesEditComponent implements OnInit {
+export class AutoRepliesEditComponent implements OnInit {
 
     formTitle = '';
     form: FormGroup;
-    serverResponse = {message: ''};
+    serverResponse = { message: '' };
     loading = false;
     tinymce;
 

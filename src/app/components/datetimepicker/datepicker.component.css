@@ -40,6 +40,10 @@ select {
     margin-right: 0.5em;
 }
 
+.datebtn:last-of-type {
+    margin-left: 0.5em;
+}
+
 @media screen and (max-width: 800px) {
     .dateSelect {
         font-size: 0.85em;

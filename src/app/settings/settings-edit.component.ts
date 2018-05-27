@@ -99,10 +99,7 @@ export class SettingsEditComponent implements OnInit {
             .subscribe(data => {
                 this.serverResponse = data;
                 if (data.result == 'success') {
-                    this._storageService.loadSettings();
-                    var temp = this._storageService.settingsSubject
-                                .finally(() => { temp.unsubscribe(); })
-                                .subscribe(data => { this._router.navigate(['/settings']); });
+                    this._router.navigate(['/settings']);
                 }
             });
     }
