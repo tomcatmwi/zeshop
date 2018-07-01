@@ -1,6 +1,6 @@
 import { FormGroup, FormControl } from '@angular/forms';
 
-export class FormValidators {
+export class AddressValidator {
 
     static required(control: FormControl) {
         if (control.value == null || control.value.length <= 0) {

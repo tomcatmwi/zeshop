@@ -14,7 +14,7 @@
                         <label for="title" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-2">
                             <select formControlName="title" class="form-control" id="title">
-                                <option *ngFor="let item of _storageService.values?.titles" [value]="item">{{ item }}</option>
+                                <option *ngFor="let item of _storageService.values?.titles" [value]="item.title">{{ item.title }}</option>
                             </select>
                         </div>
                         <div class="col-sm-3">
@@ -82,73 +82,14 @@
 
             <div class="card">
                 <div class="card-body">
-                    <div class="form-group row">
-                        <label for="address_country" class="col-sm-2 control-label">Country</label>
-                        <div class="col-sm-10">
-                            <select (change)="hasStates();" formControlName="address_country" class="form-control" id="address_country">
-                                <option *ngFor="let item of countries" [value]="item.id">{{ item.nameeng }}
-                                    <span *ngIf="item.nameeng != item.name">({{ item.name }})</span>
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group row" *ngIf="states.length > 0">
-                        <label for="address_state" class="col-sm-2 control-label">State / Province</label>
-                        <div class="col-sm-10">
-
-                            <select formControlName="address_state" class="form-control" id="address_state">
-                                <option *ngFor="let item of states" [value]="item.id">{{ item.name }}
-                                    <span *ngIf="item.english">({{ item.english }})</span>
-                                </option>
-                            </select>
-
-                            <div *ngIf="form.controls.address_state.touched && form.controls.address_state.errors" class="alert alert-danger" [innerHTML]="form.controls.address_state.errors.errorMsg"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row no-bottom-margin">
-                        <label for="address_city" class="col-sm-2 control-label">City and ZIP</label>
-                        <div class="col-sm-7">
-                            <input type="text" formControlName="address_city" class="form-control">
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" formControlName="address_zip" class="form-control">
-                        </div>
-                    </div>
 
                     <div class="form-group row">
-                        <div class="col-sm-2"></div>
+                        <label for="address_instructions" class="col-sm-2 control-label">Address</label>
                         <div class="col-sm-10">
-                            <div *ngIf="form.controls.address_city.dirty && form.controls.address_city.touched && 
-                                                    form.controls.address_zip.dirty && form.controls.address_zip.touched && 
-                                                    form.hasError('address_cityzip')" class="alert alert-danger" [innerHTML]="form.errors.addressCityZipErrorMessage"></div>
+                            <addressform></addressform>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="address_1" class="col-sm-2 control-label">Address line 1.</label>
-                        <div class="col-sm-10">
-                            <input type="text" formControlName="address_1" class="form-control">
-                            <div *ngIf="form.controls.address_1.touched && form.controls.address_1.errors" class="alert alert-danger" [innerHTML]="form.controls.address_1.errors.errorMsg"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="address_2" class="col-sm-2 control-label">Address line 2.</label>
-                        <div class="col-sm-10">
-                            <input type="text" formControlName="address_2" class="form-control">
-                            <div *ngIf="form.controls.address_2.touched && form.controls.address_2.errors" class="alert alert-danger" [innerHTML]="form.controls.address_2.errors.errorMsg"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="address_apt" class="col-sm-2 control-label">Suite / Apt.</label>
-                        <div class="col-sm-10">
-                            <input type="text" formControlName="address_apt" class="form-control">
-                            <div *ngIf="form.controls.address_apt.touched && form.controls.address_apt.errors" class="alert alert-danger" [innerHTML]="form.controls.address_apt.errors.errorMsg"></div>
-                        </div>
-                    </div>
 
                     <div class="form-group row">
                         <label for="address_instructions" class="col-sm-2 control-label">Delivery instructions</label>
@@ -156,7 +97,6 @@
                             <input type="text" formControlName="address_instructions" placeholder="" class="form-control">
                         </div>
                     </div>
-
 
                 </div>
             </div>

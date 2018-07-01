@@ -6,7 +6,7 @@ declare var google: any;
 @Component({
     selector: 'showmap',
     templateUrl: './showmap.component.html',
-    styleUrls: ['../confirm/confirm.component.css', './showmap.component.css'],
+    styleUrls: ['../confirm/confirm.component.scss', './showmap.component.css'],
     inputs: ['data'],
     outputs: ['close']
 })

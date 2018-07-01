@@ -1,0 +1,29 @@
+<ng-template #infobox>
+
+    <div class="confirm-box-parent" *ngIf="data?.show">
+        <div class="confirm-box">
+            <div class="content">
+                <h2>{{ data.title }}</h2>
+                <table>
+                    <thead *ngFor="let header of data?.header">
+                        <th>{{ header }}</th>
+                    </thead>
+                    <tbody *ngFor="let data of data.data">
+                        <tr>
+                            <td>{{ data.label }}</td>
+                            <td [innerHTML]="renderValue(data)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="button-bar">
+                <button class="btn btn-primary" (click)="close();">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="darken" (click)="setValue(null)" *ngIf="data?.show"></div>
+</ng-template>

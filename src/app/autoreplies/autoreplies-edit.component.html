@@ -1,22 +1,22 @@
 <div class="container">
 
-    <form class="form-horizontal" stopValidation [formGroup]="form">
-    <input type="hidden" formControlName="_id">
+    <form stopValidation [formGroup]="form">
+        <input type="hidden" formControlName="_id">
 
-          <h1>{{ formTitle }}</h1>
+        <h1>{{ formTitle }}</h1>
 
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-body">
 
-                <div class="form-group">
+                <div class="form-group row">
                     <label for="content" class="col-sm-2 control-label">Short content</label>
                     <div class="col-sm-10">
-                        <input type="text" formControlName="content" class="form-control">
+                        <input (keyup)="setToken()" type="text" formControlName="content" class="form-control">
                         <div *ngIf="form.controls.content.touched && form.controls.content.errors" class="alert alert-danger">{{ form.controls.content.errors.errorMsg }}</div>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row">
                     <label for="token" class="col-sm-2 control-label">Token</label>
                     <div class="col-sm-10">
                         <input type="text" formControlName="token" class="form-control">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row">
                     <label for="subject" class="col-sm-2 control-label">E-mail subject</label>
                     <div class="col-sm-10">
                         <input type="text" formControlName="subject" class="form-control">
@@ -32,42 +32,46 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-sm-2 control-label"></div>
+                <div class="form-group row">
+                    <div class="col-sm-2 control-label">Priority</div>
                     <div class="col-sm-10">
-                        <checkbox formControlName="available" [size]="1" [label]="('Available for sending')"></checkbox>
+                        <input type="number" class="form-control" formControlName="priority">
+                        <div *ngIf="form.controls.priority.touched && form.controls.priority.errors" class="alert alert-danger">{{ form.controls.priority.errors.errorMsg }}</div>
                     </div>
-
-                    
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row">
+                    <div class="col-sm-2 control-label"></div>
+                    <div class="col-sm-10">
+                        <checkbox formControlName="available" [size]="1" [label]="('Appears on autoreply list')"></checkbox>
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <label for="body" class="col-sm-2 control-label">Message body</label>
                     <div class="col-sm-10">
-                        <richtext formControlName="body" [elementId]="tinymce"></richtext>
+                        <editor formControlName="body" [init]="_storageService.values.tinymce_settings"></editor>
                         <div *ngIf="form.controls.body.touched && form.controls.body.errors" class="alert alert-danger">{{ form.controls.body.errors.errorMsg }}</div>
                     </div>
                 </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label"></label>
-                <div class="col-sm-10">
-                    <div class="alert" *ngIf="serverResponse && serverResponse.message != ''"
-                         [class.alert-success]="serverResponse && serverResponse.result == 'success'" 
-                         [class.alert-danger]="serverResponse && serverResponse.result == 'error'"
-                         >{{ serverResponse.message }}</div>
-                    
-                    <button [disabled]="!form.dirty || !form.valid" class="btn btn-primary" (click)="submitForm()">Submit</button>
-                    <button class="btn btn-default" routerLink="/autoreplies">Cancel</button>
-                    
-                    <spinner *ngIf="loading"></spinner>
-                    
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <div class="alert" *ngIf="serverResponse && serverResponse.message != ''" [class.alert-success]="serverResponse && serverResponse.result == 'success'"
+                            [class.alert-danger]="serverResponse && serverResponse.result == 'error'">{{ serverResponse.message }}</div>
+
+                        <button [disabled]="!form.dirty || !form.valid" class="btn btn-primary" (click)="submitForm()">Submit</button>
+                        <button class="btn btn-default" routerLink="/autoreplies">Cancel</button>
+
+                        <spinner *ngIf="loading"></spinner>
+
+                    </div>
                 </div>
+
             </div>
-
         </div>
-    </div>
 
-</form>
+    </form>
 
 </div>

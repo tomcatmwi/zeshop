@@ -7,31 +7,7 @@
 
         <div class="card">
             <div class="card-body">
-
-                <div class="form-group row">
-                    <label for="name" class="col-sm-2 control-label">Token</label>
-                    <div class="col-sm-10">
-                        <input type="token" formControlName="token" class="form-control">
-                        <div *ngIf="form.controls.token.touched && form.controls.token.errors" class="alert alert-danger">{{ form.controls.token.errors.errorMsg }}</div>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="name" class="col-sm-2 control-label">Value</label>
-                    <div class="col-sm-10">
-                        <input type="value" formControlName="value" class="form-control">
-                        <div *ngIf="form.controls.value.touched && form.controls.value.errors" class="alert alert-danger">{{ form.controls.value.errors.errorMsg }}</div>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="name" class="col-sm-2 control-label">Description</label>
-                    <div class="col-sm-10">
-                        <input type="description" formControlName="description" class="form-control">
-                        <div *ngIf="form.controls.description.touched && form.controls.description.errors" class="alert alert-danger">{{ form.controls.description.errors.errorMsg }}</div>
-                    </div>
-                </div>
-
+                
                 <div class="form-group row">
                     <label for="group" class="col-sm-2 control-label">Setting group</label>
                     <div class="col-sm-10">
@@ -40,7 +16,31 @@
                         </select>
                     </div>
                 </div>
-                
+
+                <div class="form-group row">
+                    <label for="description" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10">
+                        <input type="text" (keyup)="setToken()" id="description" formControlName="description" class="form-control">
+                        <div *ngIf="form.controls.description.touched && form.controls.description.errors" class="alert alert-danger">{{ form.controls.description.errors.errorMsg }}</div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="token" class="col-sm-2 control-label">Token</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="token" formControlName="token" class="form-control">
+                        <div *ngIf="form.controls.token.touched && form.controls.token.errors" class="alert alert-danger">{{ form.controls.token.errors.errorMsg }}</div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="value" class="col-sm-2 control-label">Value</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="value" formControlName="value" class="form-control">
+                        <div *ngIf="form.controls.value.touched && form.controls.value.errors" class="alert alert-danger">{{ form.controls.value.errors.errorMsg }}</div>
+                    </div>
+                </div>
+
             <div class="form-group row">
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-10">

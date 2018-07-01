@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {FormValidators} from '../services/formvalidator.service';
 import {JSONService} from '../services/json.service'
-import {StorageService} from '../services/storage.service'
 import {Router, ActivatedRoute} from '@angular/router';
 import {SpinnerComponent} from '../components/spinner/spinner.component';
 
@@ -23,8 +22,7 @@ export class SettingsEditComponent implements OnInit {
         private _fb: FormBuilder,
         private _jsonService: JSONService,
         private _router: Router,
-        private _activatedRoute: ActivatedRoute,
-        private _storageService: StorageService
+        private _activatedRoute: ActivatedRoute
     ) {}
     
     ngOnInit() {
@@ -33,7 +31,7 @@ export class SettingsEditComponent implements OnInit {
         
         this.form = this._fb.group({
             _id: [0, FormValidators.required],
-            token: ['', Validators.compose([FormValidators.required, FormValidators.minLength(5), FormValidators.token])],
+            token: ['', Validators.compose([FormValidators.required, FormValidators.minLength(3), FormValidators.token])],
             value: ['', FormValidators.required],
             description: ['', Validators.compose([FormValidators.required, FormValidators.minLength(5)])],
             group: [null, FormValidators.required]
@@ -57,9 +55,9 @@ export class SettingsEditComponent implements OnInit {
         var temp = this._activatedRoute.params
             .subscribe(data => {
                 
-                if (!data['id'])
+                if (!data['id']) {
                     this.formTitle = 'New setting';
-                else {
+                } else {
                     this.loading = true;
                     this.formTitle = 'Edit setting';
 
@@ -103,4 +101,14 @@ export class SettingsEditComponent implements OnInit {
                 }
             });
     }
+
+
+    setToken() {
+        if (this.form.controls['token'].touched) { return false; }
+        let temp = this.form.controls['description'].value;
+        temp = temp.replace(/[^a-zA-Z0-9]/g, '');
+        temp = temp.replace(' ', '_');
+        this.form.controls['token'].setValue(temp.toLowerCase());
+        this.form.controls['token'].markAsDirty();
+    }    
 }

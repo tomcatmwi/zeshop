@@ -32,41 +32,30 @@ export class StorageService {
     constructor(
         private _http: Http,
         private _location: Location
-    ) {}
+    ) { }
 
-    //  ------- load settings from server -------
-    //  called from the AppModule with APP_INITIALIZER!
+    //  ------- load personal settings from server -------
+    //  called ONCE after login
 
-    loadSettings(): Promise<any> {
-        return new Promise((resolve, reject) => {
-
-            const temp = this._http.get(this.baseURL + '/settings', this._requestOptions)
-                .finally(() => {
-                    temp.unsubscribe();
-                    resolve();
-                })
-                .subscribe(
-                    data => {
-                        let result = JSON.parse((<any>data)._body);
-                        if (result.result === 'success' && result.data.length > 0) {
-                            this.settings = result.data;
-                        } else {
-                            console.log('ERROR: Unable to load settings from server!');
-                            reject();
-                        }
-                    },
-                    error => {
-                        console.log('ERROR: No connection with server - settings can\'t be loaded!');
-                        reject();
+    loadSettings() {
+        const temp = this._http.get(this.baseURL + '/settings', this._requestOptions)
+            .finally(() => {
+                temp.unsubscribe();
+            })
+            .subscribe(
+                data => {
+                    let result = JSON.parse((<any>data)._body);
+                    if (result.result === 'success' && result.data.length > 0) {
+                        this.settings = result.data;
+                        console.log('Settings loaded!');
+                    } else {
+                        console.log('ERROR: Unable to load settings from server!');
                     }
-                );
-
-        }).then(result => {
-            console.log('Settings successfully loaded.');
-        }).catch(e => {
-            console.log('Loading settings has failed!');
-        });
-
+                },
+                error => {
+                    console.log('ERROR: No connection with server - settings can\'t be loaded!');
+                }
+            );
     }
 
     //  ------- load values from assets/values.json -------
@@ -78,21 +67,41 @@ export class StorageService {
             const temp = this._http.get('assets/json/values.json', this._requestOptions)
                 .finally(() => {
                     temp.unsubscribe();
-                    resolve();
                 })
                 .subscribe(
                     data => {
                         this.values = JSON.parse(data['_body']);
+
+                        //  Load remote data
+
+                        const temp2 = this._http.get(this.baseURL + '/getvalues', this._requestOptions)
+                            .finally(() => {
+                                temp.unsubscribe();
+                                temp2.unsubscribe();
+                                resolve();
+                            })
+                            .subscribe(
+                                result => {
+                                    let data = JSON.parse((<any>result)._body);
+                                    if (data.result === 'success') {
+                                        _.extend(this.values, data.data);
+                                    } else {
+                                        reject('ERROR: Unable to load values from server!');
+                                    }
+                                },
+                                error => {
+                                    reject('ERROR: No connection with server - values can\'t be loaded!');
+                                }
+                            );
                     },
                     error => {
-                        console.log('ERROR: Can\'t load assets/values.json!');
-                        reject();
+                        reject('ERROR: Can\'t load assets/values.json!');
                     });
 
         }).then(result => {
             console.log('Values successfully loaded.');
         }).catch(e => {
-            console.log('Loading values has failed.');
+            console.log(e);
         });
 
     }
@@ -144,6 +153,26 @@ export class StorageService {
         if (makeUnique) { result = _.uniqWith(result, _.isEqual); }
         return result;
     }
+
+    sortObject(source: any[],
+        key,
+        sortOrder = 1,
+        makeUnique = false,
+        locale = 'en',
+        options = { numeric: true, caseFirst: 'upper', ignorePunctuation: true }
+    ) {
+        if (!Array.isArray(source) || source.length === 0 || typeof source[0][key] === 'undefined') { return false; }
+
+        //  slice() is needed because mysteriously it doesn't work any other way!
+        let result = source.slice().sort((a, b) => {
+            return a[String(key)].localeCompare(b[String(key)], locale, options);
+        });
+
+        if (sortOrder !== 1) { result = _.reverse(result); }
+        if (makeUnique) { result = _.uniqWith(result, _.isEqual); }
+        return result;
+    }
+
 
     getCountry(id) {
         if (typeof this.values['countries'] === 'undefined') { return false; }

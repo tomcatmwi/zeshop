@@ -6,6 +6,7 @@ import { JSONService } from '../services/json.service'
 import { MD5Service } from '../services/md5.service'
 import { Router, ActivatedRoute } from '@angular/router';
 import { SpinnerComponent } from '../components/spinner/spinner.component';
+import { AddressFormComponent } from '../components/addressform/addressform.component';
 import { ConfirmComponent } from '../components/confirm/confirm.component';
 import { StorageService } from '../services/storage.service'
 import * as _ from "lodash";
@@ -46,14 +47,13 @@ export class UsersEditComponent implements OnInit {
 
         //  get array values
 
-        this.countries = this._storageService.sortArray(this._storageService.values.countries, 'nameeng');
         this.phone_countries = this._storageService.sortArray(this._storageService.values.countries, 'phonecode');
 
         //  create form
 
         this.form = this._fb.group({
             _id: [0, FormValidators.required],
-            title: [this._storageService.values.titles[0]],
+            title: [this._storageService.values.titles[0].title],
             firstname: [''],
             middlename: [''],
             lastname: [''],
@@ -61,13 +61,15 @@ export class UsersEditComponent implements OnInit {
             phone_country: ['CA'],
             phone_district: [''],
             phone_number: [''],
-            address_country: ['CA'],
-            address_state: [this.states[0]],
-            address_city: [''],
-            address_zip: [''],
-            address_1: ['', Validators.compose([FormValidators.required, FormValidators.minLength(5)])],
-            address_2: [''],
-            address_apt: [''],
+
+            // address_country: ['CA'],
+            // address_state: [this.states[0]],
+            // address_city: [''],
+            // address_zip: [''],
+            // address_1: ['', Validators.compose([FormValidators.required, FormValidators.minLength(5)])],
+            // address_2: [''],
+            // address_apt: [''],
+
             address_instructions: [''],
             username: ['', Validators.compose([FormValidators.required, FormValidators.minLength(5), FormValidators.username])],
             password_1: [''],
@@ -80,34 +82,35 @@ export class UsersEditComponent implements OnInit {
                     FormValidators.validatePhone('phone_district', 'phone_number'),
                     FormValidators.validateName('firstname', 'lastname'),
                     FormValidators.validatePassword('password_1', 'password_2'),
-                    FormValidators.validateAddress('address_city', 'address_zip'),
+//                    FormValidators.validateAddress('address_city', 'address_zip'),
                 ])
             });
 
-        this.hasStates();
-
         //  Show the 'level' field if user level > 1        
-        if (Number(localStorage.getItem('user.level')) > 1)
+        if (Number(localStorage.getItem('user.level')) > 1) {
             this.admin = true;
+        }
 
         //  get http parameter
         //  if it's empty, we register a new user
         //  if == "current", then we modify the current user
         //  if it's anything else, we check whether that _id exists
 
-        var temp = this._activatedRoute.params
+        const temp = this._activatedRoute.params
             .finally(() => { temp.unsubscribe(); })
             .subscribe((data) => {
                 this.loading = true;
-                var id = '0';
-                if (data['id'] == 'current')
+                let id = '0';
+                if (data['id'] == 'current') {
                     id = localStorage.getItem('user._id')
-                else
+                } else {
                     id = data['id']
-                if (!id)
+                }
+                if (!id) {
                     id = '0';
+                }
 
-                if (id == '0') {
+                if (id === '0') {
                     this.pagetitle = 'Add new user'
                     this.buttontext = 'Add user';
                     this.loading = false;
@@ -118,9 +121,9 @@ export class UsersEditComponent implements OnInit {
                 //  attempt to load user data id
                 //  and if the current user modifies himself or has level > 1
 
-                if (id != '0') {
+                if (id !== '0') {
 
-                    var temp2 = this._jsonService.getJSON('users/' + id)
+                    const temp2 = this._jsonService.getJSON('users/' + id)
                         .finally(() => {
                             this.loading = false;
                             temp2.unsubscribe();
@@ -132,7 +135,7 @@ export class UsersEditComponent implements OnInit {
                                 return false;
                             }
 
-                            for (var key in data.data[0]) {
+                            for (const key in data.data[0]) {
                                 if (this.form.controls[key]) {
                                     this.form.controls[key].setValue(data.data[0][key]);
                                     this.form.controls[key].markAsDirty();
@@ -142,10 +145,6 @@ export class UsersEditComponent implements OnInit {
                             this.form.controls['password_1'].setValue(data.data[0].password);
                             this.form.controls['password_2'].setValue(data.data[0].password);
 
-                            if (this.hasStates()) {
-                                this.form.controls['address_state'].setValue(data.data[0].address_state);
-                                this.form.value.address_state = data.data[0].address_state;
-                            }
                         },
                         () => {
                             this.serverResponse = {
@@ -198,12 +197,4 @@ export class UsersEditComponent implements OnInit {
             });
     }
 
-    hasStates() {
-        this.states = _.filter(this._storageService.values.states, { country: this.form.value.address_country });
-        if (this.states.length > 0) {
-            this.form.controls['address_state'].setValue(this.states[0].id);
-            this.form.value.address_state = this.states[0].id;
-        }
-        return this.states.length > 0;
-    }
 }

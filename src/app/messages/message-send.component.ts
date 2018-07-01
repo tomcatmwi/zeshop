@@ -35,7 +35,7 @@ export class MessageSendComponent implements OnInit {
     this.form = this._fb.group({
       name: ['', Validators.compose([FormValidators.required, FormValidators.minLength(5)])],
       email: ['', Validators.compose([FormValidators.required, FormValidators.email])],
-      phone_country: ['CA'],
+      phone_country: [1],
       phone_district: [''],
       phone_number: [''],
       order_id: ['', Validators.compose([FormValidators.orderCode(true)])],

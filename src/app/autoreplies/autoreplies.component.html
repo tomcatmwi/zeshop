@@ -16,21 +16,21 @@
     <table class="table">
            <thead>
             <tr>
-                <th class="tablecol-600">Description</th>
+                <th class="tablecol-600">Content description</th>
                 <th>Subject</th>
                 <th class="tablecol-600">Token</th>
-                <th class="tablecol-600" class="center">Priority</th>
+                <th class="center">Priority</th>
                 <th class="tableglyph"></th>
                 <th class="tableglyph"></th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let data of data?.data, let rowIndex = index">
-                <td class="tablecol-600">{{ data?.description }}</td>
+                <td class="tablecol-600">{{ data?.content }}</td>
                 <td>{{ data?.subject }}</td>
                 <td class="tablecol-600">{{ data?.token }}</td>
-                <td class="tablecol-600" class="center">{{ data?.priority }}</td>
-                <td class="tableglyph"><a [routerLink]="'/autoreplies_edit/'+data?._id" class="fa fa-edit"></a></td>
+                <td class="center">{{ data?.priority }}</td>
+                <td class="tableglyph"><a [routerLink]="'/autoreplies-edit/'+data?._id" class="fa fa-edit"></a></td>
                 <td class="tableglyph"><a (click)="delete(data?._id, rowIndex);" class="fa fa-remove"></a></td>
             </tr>
         </tbody>

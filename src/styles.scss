@@ -2,12 +2,37 @@
 @import "assets/css/sticky-footer-navbar.css";
 @import "assets/css/font-awesome.min.css";
 
+$background: #FFFFFF;
+$black: #000000;
+$blue: #0000FF;
+$lightgrey: #F5F5F5;
+$formgrey: #D1D1D1;
+$formborder: #DDDDDD;
+
 body {
     overflow-x: hidden;
-    background-color: #fff;
+    background-color: $background;
     background-image: url(assets/img/grid.png);
     background-repeat: repeat-x;
     background-position: 0 0px;    
+}
+
+#bootscreen {
+    background-color: $black;
+    width: 100vw;
+    height: 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+#bootscreen img {
+    width: 100%;
+    height: auto;    
 }
 
 nav {
@@ -16,17 +41,21 @@ nav {
 
 a, a:visited {
     cursor: pointer;
-    color: #000000;
+    color: $black;
 }
 
 a:hover {
     decoration: underline;
-    color: #0000ff;
+    color: $blue;
 }
 
 h1, h2, h3, h4, h5 {
     margin-bottom: 1em;
     margin-top: 1em;
+}
+
+button:not(:last-of-type) {
+    margin-right: .5em;
 }
 
 .center {
@@ -40,15 +69,24 @@ h1, h2, h3, h4, h5 {
 
 .glyphicon:hover {
     opacity: 1;
+    text-decoration: none;
 }
 
 .iconbtn {
     width: auto;
     height: auto;
-    max-width: 4em;
-    max-height: 4em;
+    max-width: 3.5em;
+    max-height: 3.5em;
     min-width: 3em;
     min-height: 3em;
+}
+
+.iconbtn-text {
+    width: auto;
+    height: auto;
+    max-height: 3.5em;
+    min-width: 3em;
+    min-height: 3em;    
 }
 
 .alert-small {
@@ -89,16 +127,27 @@ thead {
 
 th {
     padding-bottom: 1em;
-    background-color: #F5F5F5;
+    background-color: $lightgrey;
     border: none !important;
 }
 
 .tableglyph {
     text-align: center;
     cursor: pointer;
-    width: 1.5em;
-    min-width: 1.5em;
+    width: auto;
+    min-width: 1em;
     max-width: 1.5em !important;
+    text-decoration: none;
+}
+
+.tableglyph a {
+    margin: 0;
+    padding: 0;
+}
+
+.tableglyph:hover {
+    text-decoration: none;
+    background-color: $lightgrey;
 }
 
 td:not(.tableglyph) {
@@ -108,19 +157,20 @@ td:not(.tableglyph) {
     width: auto;
     min-width: 1em;
     max-width: calc(100% - 2em);
-}
-
-.thead-caption {
-    background-color: #F5F5F5;
+    margin-left: 0;
+    padding-left: 0.5em;
 }
 
 table > tr:first-child > td {
     border-top: 0 !important;
-    background: #FF0000;
 }
 
 .table-control {
     margin-bottom: 1em;
+}
+
+.thead-group {
+    background-color: $background;
 }
 
 /*  Form settings ------------------------------------------------------------------- */
@@ -135,7 +185,7 @@ label {
 }
 
 ::placeholder {
-    color: #D1D1D1 !important;
+    color: $formgrey !important;
     opacity: 1;
 }
 
@@ -148,7 +198,7 @@ label {
 }
 
 form > .card {
-    background-color: #F5F5F5;
+    background-color: $lightgrey;
     border: none;
 }
 
@@ -180,17 +230,17 @@ input[type=checkbox] {
     height: 2em;
     display: inline-block;
     vertical-align: center;
-    background-color: #FFFFFF;
-    border: 1px solid #DDDDDD;
+    background-color: $background;
+    border: 1px solid $formborder;
     border-radius: 3px;
-    color: #000000;
+    color: $black;
 }
 
 /*  Tabbed cards ------------------------------------------------------------------- */
 
 .card-tabbed {
     border: none;
-    background-color: #F5F5F5;
+    background-color: $lightgrey;
     border-top-left-radius: 0;
 }
 
@@ -202,12 +252,26 @@ input[type=checkbox] {
 }
 
 .container .nav-tabs > .nav-item > .active {
-    background-color: #F5F5F5;
+    background-color: $lightgrey;
 }
 
 /*  Mobile stuff ------------------------------------------------------------------- */
 
 @media only screen and (max-width: 600px) {
+
+    table {
+        font-size: 0.8em;
+    }
+
+    td, th {
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .tableglyph {
+        font-size: 1em;
+    }
+
     .tablecol-600 {
         display: none;
     }

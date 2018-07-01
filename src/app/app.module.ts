@@ -9,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { MomentModule } from 'ngx-moment';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 //  Page components
 import { LoginComponent } from './login/login.component';
@@ -33,6 +34,7 @@ import { AppComponent } from './app.component';
 import { MainmenuComponent } from './mainmenu/mainmenu.component';
 import { FooterbarComponent } from './footerbar/footerbar.component';
 import { ConfirmComponent } from './components/confirm/confirm.component';
+import { InfoBoxComponent } from './components/infobox/infobox.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { DateTimePickerComponent } from './components/datetimepicker/datetimepicker.component';
@@ -41,6 +43,7 @@ import { UserSelectComponent } from './components/userselect/userselect.componen
 import { ShowMapComponent } from './components/showmap/showmap.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { RicheditComponent } from './components/richedit/richedit.component';
+import { AddressFormComponent } from './components/addressform/addressform.component';
 
 //  Services
 import { JSONService } from './services/json.service';
@@ -50,10 +53,6 @@ import { FormValidators } from './services/formvalidator.service';
 import { GoogleMapsService } from './components/googlemaps/googlemaps.service';
 import { StorageService } from './services/storage.service';
 import { FormatNumberPipe, FormatSecondsPipe, ChopStringPipe } from './pipes/formatter.pipe';
-
-export function loadSettings(storageService: StorageService) {
-    return () => storageService.loadSettings();
-}
 
 export function loadValues(storageService: StorageService) {
     return () => storageService.loadValues();
@@ -65,6 +64,7 @@ export function loadValues(storageService: StorageService) {
         MainmenuComponent,
         FooterbarComponent,
         ConfirmComponent,
+        InfoBoxComponent,
         SpinnerComponent,
         PaginatorComponent,
         DateTimePickerComponent,
@@ -73,6 +73,7 @@ export function loadValues(storageService: StorageService) {
         ShowMapComponent,
         CheckboxComponent,
         RicheditComponent,
+        AddressFormComponent,
 
         FormatNumberPipe,
         FormatSecondsPipe,
@@ -103,7 +104,8 @@ export function loadValues(storageService: StorageService) {
         routing,
         NgbModule.forRoot(),
         RecaptchaModule.forRoot(),
-        MomentModule
+        MomentModule,
+        EditorModule
     ],
     providers: [
         StorageService,
@@ -112,7 +114,6 @@ export function loadValues(storageService: StorageService) {
         FormValidators,
         LoginCheck,
         GoogleMapsService,
-        { provide: APP_INITIALIZER, useFactory: loadSettings, deps: [StorageService], multi: true },
         { provide: APP_INITIALIZER, useFactory: loadValues, deps: [StorageService], multi: true }
     ],
     bootstrap: [AppComponent]

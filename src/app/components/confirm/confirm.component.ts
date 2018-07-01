@@ -5,34 +5,34 @@ import { Component, Input, Output, EventEmitter, ViewContainerRef, ViewChild } f
 @Component({
     selector: 'confirmbox',
     templateUrl: './confirm.component.html',
-    styleUrls: ['./confirm.component.css'],
+    styleUrls: ['./confirm.component.scss'],
     inputs: ['data'],
     outputs: ['response']
 })
 
 export class ConfirmComponent {
-    
+
     @ViewChild('confirmbox') confirmBox;
-    
+
     response = new EventEmitter();
-    
-    data = { 
+
+    data = {
             show: false,
-            text: 'Default text', 
+            text: 'Default text',
             buttons: [
                 { label: 'Close', value: null, class: 'btn-primary' }
-            ] 
+            ]
            }
-    
+
     constructor(private _confirmBox: ViewContainerRef) {}
-    
+
     ngAfterViewInit() {
         this._confirmBox.createEmbeddedView(this.confirmBox);
     }
-    
+
     setValue(value) {
         this.response.emit(value);
         this.data.show = false;
     }
-   
+
 }

@@ -28,7 +28,7 @@
                 <label for="phone_country" class="col-sm-2 control-label">Phone</label>
                 <div class="col-sm-2">
                     <select formControlName="phone_country" class="form-control" id="phone_country">
-                        <option *ngFor="let item of phone_countries" [value]="item.id">+{{ item.phonecode }} ({{ item.nameeng }})</option>
+                        <option *ngFor="let item of phone_countries" [value]="item.phonecode">+{{ item.phonecode }} ({{ item.nameeng }})</option>
                     </select>
                 </div>
                 <div class="col-sm-2">

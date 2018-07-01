@@ -1,0 +1,53 @@
+<form stopValidation [formGroup]="form">
+
+<!-- COUNTRY -------------------------------------------------------------->
+<div>
+    <select (change)="getRegions();" formControlName="country" class="form-control" id="country">
+        <option value="0">-- Country --</option>
+        <option *ngFor="let item of countries" [value]="item.id">{{ item.nameeng }}
+            <span *ngIf="item.nameeng != item.name">({{ item.name }})</span>
+        </option>
+    </select>
+</div>
+
+<!-- REGION -------------------------------------------------------------->
+<div *ngIf="regions">
+    <select formControlName="region" class="form-control" id="region">
+        <option value="0">-- Region (state, province, district, etc.) --</option>
+        <option *ngFor="let item of regions" [value]="item.id">{{ item.name }}
+            <span *ngIf="item.nameeng">({{ item.nameeng }})</span>
+        </option>
+    </select>
+</div>
+
+<!-- LOCALITY -------------------------------------------------------------->
+
+<div>
+    <input type="text" formControlName="locality" placeholder="Locality / City" class="form-control">
+</div>
+
+<!-- POSTAL CODE -------------------------------------------------------------->
+
+<div>
+    <input type="text" formControlName="postalcode" placeholder="Postal code" class="form-control">
+</div>
+
+<!-- ADDRESS LINES -------------------------------------------------------------->
+
+<div>
+    <input type="text" formControlName="address_1" placeholder="Address line 1" class="form-control">
+</div>
+<div>
+    <input type="text" formControlName="address_2" placeholder="Address line 2" class="form-control">
+</div>
+<div>
+    <input type="text" formControlName="address_3" placeholder="Address line 3" class="form-control">
+</div>
+
+<!-- SUITE/APT -------------------------------------------------------------->
+
+<div>
+    <input type="text" formControlName="apartment" placeholder="Suite / Apartment" class="form-control">
+</div>
+
+</form>

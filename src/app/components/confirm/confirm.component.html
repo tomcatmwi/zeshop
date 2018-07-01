@@ -2,7 +2,7 @@
 
     <div class="confirm-box-parent" *ngIf="data?.show">
         <div class="confirm-box">
-            <div [innerHTML] = "data.text"></div>
+            <div class="content" [innerHTML]="data.text"></div>
             <div class="button-bar">
                 <button 
                     *ngFor="let button of data.buttons"

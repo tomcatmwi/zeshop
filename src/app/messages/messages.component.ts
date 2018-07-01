@@ -10,7 +10,7 @@ import {CheckboxComponent} from '../components/checkbox/checkbox.component';
 @Component({
   selector: 'messages',
   templateUrl: './messages.component.html',
-  styleUrls: ['./messages.component.css']
+  styleUrls: ['./messages.component.scss']
 })
 export class MessagesComponent implements OnInit {
 
@@ -18,6 +18,7 @@ export class MessagesComponent implements OnInit {
     folders;
     autoreplies;
     confirmBoxData;
+    infoBoxData;
     loading = false;
     menutab = 1;
 
@@ -48,9 +49,10 @@ export class MessagesComponent implements OnInit {
         this.loadData();
   }
 
-//  called when datetimeselector is changed  
-  setDate(date) {
-      this.viewSettings.currentDate = date;
+//  called when datetimeselector is changed
+  setDate(e) {
+      if (typeof e.date === 'undefined') { return false; }
+      this.viewSettings.currentDate = e.date;
       this.loadData();
   }
 
@@ -90,44 +92,39 @@ export class MessagesComponent implements OnInit {
 
     let filter = '?';
 
-    function addZero(input) { 
-        if (input.length < 2) return '0'+input 
-        else return input; 
-    }
-
     //  search filter and mode
     if (this.viewSettings.searchText.length > 3) {
-        filter += 's='+encodeURIComponent(this.viewSettings.searchText);
-        filter += '&sf='+encodeURIComponent(this.viewSettings.searchField);
-        filter += '&sm='+encodeURIComponent(this.viewSettings.searchMode);
+        filter += 's=' + encodeURIComponent(this.viewSettings.searchText);
+        filter += '&sf=' + encodeURIComponent(this.viewSettings.searchField);
+        filter += '&sm=' + encodeURIComponent(this.viewSettings.searchMode);
     } else {
 
-        //  date filter
-        filter += 'd=' + this.viewSettings.currentDate.getUTCFullYear() + 
-                        addZero(String(this.viewSettings.currentDate.getUTCMonth()+1)) + 
-                        addZero(String(this.viewSettings.currentDate.getUTCDate()));
+    //  date filter
+        // filter += 'd=' + this.viewSettings.currentDate.getUTCFullYear() + 
+        //                 _.padStart(String(this.viewSettings.currentDate.getUTCMonth()+1), 2, '0') + 
+        //                 _.padStart(String(this.viewSettings.currentDate.getUTCDate()), 2, '0');
+
+        filter += 'd=20180601';
     }
 
     //  folder filter
     if (this.viewSettings.folder) {
-        filter += '&f='+this.viewSettings.folder;
+        filter += '&f=' + this.viewSettings.folder;
     }
 
 //  load data
-console.log(filter);
-      const temp = this._jsonService.getJSON('/message'+filter)
+      const temp = this._jsonService.getJSON('/message' + filter)
         .finally(() => { 
                          temp.unsubscribe();
                          this.loading = false; 
                        })
         .subscribe(
-            data => { this.data = data; },
+            data => { console.log(data); this.data = data; },
             error => { this.data = { result: 'error', message: 'Unable to connect to server.' }; }
         );
   }
 
   deleteMessage(id) {
-
     this.confirmBoxData = {
         show: true,
         text: 'Do you really want to delete this message?',
@@ -138,12 +135,79 @@ console.log(filter);
     }
   }
 
+  ipInfo(ip) {
+    this.infoBoxData = {
+        show: true,
+        title: 'Client information',
+        data: [
+            {
+                label: 'IP address:',
+                value: ip.ip,
+                error: 'Unknown'
+            },
+            {
+                label: 'User agent:',
+                value: ip.useragent,
+                error: 'Unknown'
+            },
+            {
+                label: 'Location:',
+                value: [ip.country, ip.regionName, ip.city],
+                error: 'Unknown'
+            },
+            {
+                label: 'Coordinates:',
+                value: [ip.lat, ip.lon],
+                error: 'Unknown',
+                link: 'https://www.google.com/maps?q='+ip.lat+','+ip.lon
+            },
+            {
+                label: 'ISP:',
+                value: ip.isp,
+                error: 'Unknown'
+            },
+            {
+                label: 'Organization:',
+                value: ip.org,
+                error: 'Unknown'
+            }
+        ]
+    }
+  }
+
+  userInfo(user) {
+      this.infoBoxData = {
+          show: true,
+          title: user.fullname,
+          data: [
+            {
+                label: 'Address:',
+                value: user.address
+            },
+            {
+                label: 'E-mail:',
+                value: user.email,
+                link: 'mailto:'+user.email
+            },
+            {
+                label: 'Phone:',
+                value: user.phone,
+                link: 'tel:'+user.phone
+            },
+            {
+                label: 'Registered:',
+                value: user.registered
+            }
+        ]
+      }
+  }
+
   confirmBoxHandler(stuff) {
       if (!stuff) { return false; }
-      const temp = this._jsonService.deleteJSON('/messages/'+stuff.id)
-        .finally(() => { 
+      const temp = this._jsonService.deleteJSON('/messages/' + stuff.id)
+        .finally(() => {
                          temp.unsubscribe();
-                         this.loading = false; 
+                         this.loading = false;
                        })
         .subscribe(
             () => {

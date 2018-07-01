@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
             .subscribe(data => {
                 if (data.result === 'success') {
                     this.recaptcha_data = data.data;
+                    this._storageService.loadSettings();
                 } else {
                     this.serverResponse = { result: 'error', message: 'Unable to obtain reCaptcha site key.' };
                 }

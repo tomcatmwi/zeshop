@@ -1,5 +1,4 @@
 <confirmbox *ngIf="confirmBoxData?.show" [data]="confirmBoxData" (response)="confirmBoxHandler($event)"></confirmbox>
-<infobox *ngIf="infoBoxData?.show" [data]="infoBoxData"></infobox>
 
 <div class="container">
     <h1>Messages</h1>
@@ -21,7 +20,11 @@
             <form>
                 <div class="row inline-form">
                     <div class="col-lg-7">
-                        <datetimepicker (change)="setDate($event);" [showTime]="false" [startYear]="2017" [endYear]="current">
+                        <datetimepicker
+                            (change)="setDate($event);"
+                            [showTime]="false"
+                            [startYear]="2017"
+                            [endYear]="current">
                         </datetimepicker>
                     </div>
                     <div class="col-lg-5">
@@ -73,6 +76,7 @@
         </div>
     </div>
 
+
     <div class="card card-tabbed" *ngIf="menutab==3">
         <div class="card-body">
             <form class="form-inline">
@@ -85,65 +89,77 @@
 
     <div class="alert alert-danger" (click)="this.data.result = 'pending'" *ngIf="!loading && data?.result == 'error'">{{ data?.message }}</div>
 
-    <div *ngFor="let data of data?.data">
-        <div class="message" style="margin-bottom: 1em;">
+    <div class="msgcontainer container" *ngFor="let data of data?.data">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 msgpanel sidebar">
 
-            <div style="padding: 0;">
-                <div class="messagebody-header">
+                <div class="buttonbar">
+                    <p>
+                        <b>{{ data.name }}</b>
+                    </p>
+                    <p>{{ data.date | date:'hh:mm:ss' }}</p>
+                    <p>{{ data.email }}</p>
+                    <p><a href="('tel:'+data.phone_country+data.phone_district+data.phone_number)">+{{ data.phone_country }} {{ data.phone_district }} {{ data.phone_number }}</a></p>
+                    <p>{{ data.ip }}</p>
+                    <p *ngIf="data.order_id != ''">
+                        <a routerLink="('/order/'+data.order_id)">{{ data.order_id }}</a>
+                    </p>
+                </div>
 
-                    <div class="pull-right messagebody-header-quickicons">
-                        <div class="fa fa-chevron-down"></div>
+                <div class="buttonbar">
+                    <button class="btn btn-default iconbtn" (click)="deleteMessage(data._id)">
+                        <i class="fa fa-remove"></i>
+                    </button>
+                    <button class="btn btn-default iconbtn">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button class="btn btn-default iconbtn">
+                        <i class="fa fa-envelope"></i>
+                    </button>
+                </div>
+
+                <div class="buttonbar">
+                    <div *ngIf="data.ordercode != ''">
+                        <a href="#">{{ data.ordercode }}</a>
                     </div>
-                    <div class="message-subject">
-                        <p>{{ data.subject }}</p>
-                        <p *ngIf="data.user_id"><a (click)="userInfo(data.user)">{{ data.name }}</a>, {{ data.date | date:'hh:mm:ss' }}</p>
-                        <p *ngIf="!data.user_id">{{ data.name }}, {{ data.date | date:'hh:mm:ss' }}</p>
+                    <div class="buttonbar-small" *ngIf="data.ipLocation">
+                        {{ data.ipLocation.city }}, {{ data.ipLocation.country }}, {{ data.ipLocation.regionName }}
+                        <br /> {{ data.ipLocation?.timezone }}
+                        <br /> {{ data.ipLocation?.isp }}
+                        <br /> {{ data.ipLocation?.org }}
                     </div>
                 </div>
 
-                <div class="messagebody-header controls">
-
-                    <div>
-                        <button class="btn btn-default iconbtn">
-                            <i class="fa fa-envelope"></i>
-                        </button>
-                        <button class="btn btn-default iconbtn">
-                            <i class="fa fa-edit"></i>
-                        </button>
-
-                        <select class="form-control" style="display: inline-block; margin-right: 0.5em; width: auto; max-width: 50%;">
-                            <option value="0">-- No automatic answer --</option>
-                            <option *ngFor="let autoreply of autoreplies" [value]="autoreply._id">{{ autoreply.content }}</option>
-                        </select>
-                        <button class="btn btn-default iconbtn">
-                            <i class="fa fa-question"></i>
-                        </button>
-                        <button class="btn btn-default iconbtn">
-                            <i class="fa fa-share"></i>
-                        </button>
-
-                        <button class="btn btn-default iconbtn-text" *ngIf="data.order_id != ''" routerLink="('/order/'+data.order_id)">
-                            {{ data.order_id }}
-                        </button>
-                        
-                        <button type="button" class="btn btn-default iconbtn" (click)="ipInfo(data.ip, data.iplocation)">
-                                <i class="fa fa-info"></i>
-                        </button>
-
-                        <button class="btn btn-default iconbtn">
-                            <i class="fa fa-check"></i>
-                        </button>
-                        <button class="btn btn-default iconbtn" (click)="deleteMessage(data._id)">
-                            <i class="fa fa-trash"></i>
-                        </button>
-
-                    </div>
+                <div class="buttonbar">
+                    Automatic reply:
+                    <br />
+                    <select class="form-control">
+                        <option value="0">-- No automatic answer --</option>
+                        <option *ngFor="let autoreply of autoreplies" [value]="autoreply._id">{{ autoreply.content }}</option>
+                    </select>
                 </div>
 
-                <div class="messagebody" [innerHTML]="data.body"></div>
+                <div class="buttonbar">
+                    <button class="btn btn-default iconbtn">
+                        <i class="fa fa-question"></i>
+                    </button>
+                    <button class="btn btn-default iconbtn">
+                        <i class="fa fa-share"></i>
+                    </button>
+                </div>
+
+                <div class="buttonbar">
+                    <checkbox [value]="data.replied" [size]="1" [label]="('Replied')" (change)="replied($event.checked);"></checkbox>
+                </div>
+
             </div>
-
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 msgpanel msgbar" style="padding: 0 !important;">
+                <div class="subjectbar">{{ data.subject }}</div>
+                <div [innerHTML]="data.body"></div>
+            </div>
         </div>
+
     </div>
+
 
 </div>
