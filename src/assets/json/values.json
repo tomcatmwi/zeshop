@@ -1,5 +1,6 @@
 {
     "APIURL": "http://localhost:3001",
+    "default_country": "CA",
     "default_locale": "en-ca",
     "tinymce_settings": {
         "plugins": "autoresize link searchreplace lists paste textcolor colorpicker code fullscreen image table",

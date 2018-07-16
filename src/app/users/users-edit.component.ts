@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormValidators } from '../services/formvalidator.service';
 import { JSONService } from '../services/json.service'
 import { MD5Service } from '../services/md5.service'
 import { Router, ActivatedRoute } from '@angular/router';
-import { SpinnerComponent } from '../components/spinner/spinner.component';
-import { AddressFormComponent } from '../components/addressform/addressform.component';
-import { ConfirmComponent } from '../components/confirm/confirm.component';
 import { StorageService } from '../services/storage.service'
-import * as _ from "lodash";
 
 @Component({
     selector: 'users-edit',
     templateUrl: './users-edit.component.html',
     providers: [JSONService, MD5Service]
 })
+
+//  TO BE IMPLEMENTED:
+//  Custom form component for the Phone field, just like for Address
+//  Settings have been moved to the user record - fix Settings page! Defaults are set in values.json on the backend!
+//  Slice up backend routines into separate files in subdirectories!
 
 export class UsersEditComponent implements OnInit {
 
@@ -61,15 +62,7 @@ export class UsersEditComponent implements OnInit {
             phone_country: ['CA'],
             phone_district: [''],
             phone_number: [''],
-
-            // address_country: ['CA'],
-            // address_state: [this.states[0]],
-            // address_city: [''],
-            // address_zip: [''],
-            // address_1: ['', Validators.compose([FormValidators.required, FormValidators.minLength(5)])],
-            // address_2: [''],
-            // address_apt: [''],
-
+            address: [null, FormValidators.required],
             address_instructions: [''],
             username: ['', Validators.compose([FormValidators.required, FormValidators.minLength(5), FormValidators.username])],
             password_1: [''],
@@ -81,8 +74,7 @@ export class UsersEditComponent implements OnInit {
                 validator: Validators.compose([
                     FormValidators.validatePhone('phone_district', 'phone_number'),
                     FormValidators.validateName('firstname', 'lastname'),
-                    FormValidators.validatePassword('password_1', 'password_2'),
-//                    FormValidators.validateAddress('address_city', 'address_zip'),
+                    FormValidators.validatePassword('password_1', 'password_2')
                 ])
             });
 
@@ -119,7 +111,7 @@ export class UsersEditComponent implements OnInit {
                     this.buttontext = 'Modify user';
                 }
                 //  attempt to load user data id
-                //  and if the current user modifies himself or has level > 1
+                //  and check  whether the current user modifies himself or has level > 1
 
                 if (id !== '0') {
 
@@ -129,6 +121,7 @@ export class UsersEditComponent implements OnInit {
                             temp2.unsubscribe();
                         })
                         .subscribe((data) => {
+
                             if (data.result == 'error') {
                                 this.serverResponse = data;
                                 this.loading = false;

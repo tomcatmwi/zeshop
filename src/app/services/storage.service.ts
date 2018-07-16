@@ -13,8 +13,8 @@ export class StorageService {
     //  predefined values, contents are loaded from assets/json/values.json
 
     storedViews = {};
-    settings;      // settings loaded from backend
-    values;        // settings from values.json
+    settings;      // personal settings loaded from backend
+    values;        // general system settings from values.json
     storage;       // temporary value storage
 
     // tslint:disable-next-line:member-ordering
@@ -59,7 +59,7 @@ export class StorageService {
     }
 
     //  ------- load values from assets/values.json -------
-    //  called from the AppModule with APP_INITIALIZER!
+    //  called ONCE from the AppModule with APP_INITIALIZER
 
     loadValues(): Promise<any> {
 

@@ -2,19 +2,21 @@
 
 <!-- COUNTRY -------------------------------------------------------------->
 <div>
-    <select (change)="getRegions();" formControlName="country" class="form-control" id="country">
-        <option value="0">-- Country --</option>
+    <select formControlName="country" (change)="changeCountry()" class="form-control" id="country">
         <option *ngFor="let item of countries" [value]="item.id">{{ item.nameeng }}
             <span *ngIf="item.nameeng != item.name">({{ item.name }})</span>
         </option>
     </select>
 </div>
 
+<div *ngIf="loading">
+    <spinner spinnerSize=1></spinner>
+</div>
+
 <!-- REGION -------------------------------------------------------------->
-<div *ngIf="regions">
-    <select formControlName="region" class="form-control" id="region">
-        <option value="0">-- Region (state, province, district, etc.) --</option>
-        <option *ngFor="let item of regions" [value]="item.id">{{ item.name }}
+<div *ngIf="!loading && currentCountry?.regions">
+    <select formControlName="region" class="form-control" (change)="addressChange()" id="region">
+        <option *ngFor="let item of currentCountry.regions" [value]="item.id">{{ item.name }}
             <span *ngIf="item.nameeng">({{ item.nameeng }})</span>
         </option>
     </select>
@@ -22,32 +24,37 @@
 
 <!-- LOCALITY -------------------------------------------------------------->
 
-<div>
-    <input type="text" formControlName="locality" placeholder="Locality / City" class="form-control">
+<div *ngIf="!loading && activeFields.locality">
+    <input type="text" formControlName="locality" placeholder="Locality / City" (change)="addressChange()" class="form-control">
+    <div *ngIf="form.controls.locality.touched && form.controls.locality.errors" class="alert alert-danger" [innerHTML]="form.controls.locality.errors.errorMsg"></div>
 </div>
 
 <!-- POSTAL CODE -------------------------------------------------------------->
 
-<div>
-    <input type="text" formControlName="postalcode" placeholder="Postal code" class="form-control">
+<div *ngIf="!loading && activeFields.postalcode">
+    <input type="text" formControlName="postalcode" placeholder="Postal code" (change)="addressChange()" class="form-control">
+    <div *ngIf="form.controls.postalcode.touched && form.controls.postalcode.errors" class="alert alert-danger" [innerHTML]="form.controls.postalcode.errors.errorMsg"></div>
 </div>
 
 <!-- ADDRESS LINES -------------------------------------------------------------->
 
-<div>
-    <input type="text" formControlName="address_1" placeholder="Address line 1" class="form-control">
+<div *ngIf="!loading && activeFields.address1">
+    <input type="text" formControlName="address1" placeholder="Address line 1" (change)="addressChange()" class="form-control">
+    <div *ngIf="form.controls.address1.touched && form.controls.address1.errors" class="alert alert-danger" [innerHTML]="form.controls.address1.errors.errorMsg"></div>
 </div>
-<div>
-    <input type="text" formControlName="address_2" placeholder="Address line 2" class="form-control">
+<div *ngIf="!loading && activeFields.address2">
+    <input type="text" formControlName="address2" placeholder="Address line 2" (change)="addressChange()" class="form-control">
+    <div *ngIf="form.controls.address2.touched && form.controls.address2.errors" class="alert alert-danger" [innerHTML]="form.controls.address2.errors.errorMsg"></div>
 </div>
-<div>
-    <input type="text" formControlName="address_3" placeholder="Address line 3" class="form-control">
+<div *ngIf="!loading && activeFields.address3">
+    <input type="text" formControlName="address3" placeholder="Address line 3" (change)="addressChange()" class="form-control">
+    <div *ngIf="form.controls.address3.touched && form.controls.address3.errors" class="alert alert-danger" [innerHTML]="form.controls.address3.errors.errorMsg"></div>
 </div>
 
 <!-- SUITE/APT -------------------------------------------------------------->
 
-<div>
-    <input type="text" formControlName="apartment" placeholder="Suite / Apartment" class="form-control">
+<div *ngIf="!loading">
+    <input type="text" formControlName="apartment" placeholder="Suite / Apartment / etc." (change)="addressChange()" class="form-control">
 </div>
 
 </form>
